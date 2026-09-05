@@ -7,6 +7,7 @@ export default function Home({ companyName = 'Allverze Corporation' }: HomeProps
     <section className="page home-page">
       <h1>Welcome to {companyName}</h1>
       <p>Connecting Possibilities.</p>
+      <p>Find your way here.</p>
     </section>
   );
 }
