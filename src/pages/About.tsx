@@ -1,3 +1,4 @@
+import { useTheme } from "../ThemeContext";
 import type { Page } from "../App";
 import OrbitalRing from "../components/OrbitalRing";
 
@@ -65,62 +66,52 @@ const coreValues = [
   },
 ];
 
-const executives = [
+const team = [
   {
-    name: "Alexandra Chen",
+    name: "Sarah Chen",
     title: "Chief Executive Officer",
     domain: "Corporate Strategy & Growth",
     photo: "https://images.unsplash.com/photo-1573497019236-17f8177b81e8?w=480&h=480&fit=crop&auto=format&q=80",
   },
   {
-    name: "Marcus Rodriguez",
+    name: "Marcus Wei",
     title: "Chief Technology Officer",
-    domain: "Cloud Architecture & Engineering",
+    domain: "Engineering & Architecture",
     photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=480&h=480&fit=crop&auto=format&q=80",
   },
   {
-    name: "Priya Sharma",
+    name: "Priya Anand",
     title: "Chief Operating Officer",
     domain: "Operations & Client Delivery",
     photo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=480&h=480&fit=crop&auto=format&q=80",
   },
-  {
-    name: "David Kim",
-    title: "VP, Strategy & Advisory",
-    domain: "Digital Transformation",
-    photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=480&h=480&fit=crop&auto=format&q=80",
-  },
 ];
 
-const pillars = [
-  "Best Service",
-  "Best Quality",
-  "Integrity",
-  "Reliability",
-  "Professionalism",
-];
+const pillars = ["Best Service", "Best Quality", "Integrity", "Reliability", "Professionalism"];
 
 interface AboutProps {
   navigate: (page: Page) => void;
 }
 
 export default function About({ navigate }: AboutProps) {
+  const { isDark } = useTheme();
+
+  const pageBg      = isDark ? "#060E1A" : "#F8FAFC";
+  const cardBg      = isDark ? "#0B1D35" : "#FFFFFF";
+  const cardBorder  = isDark ? "rgba(255,255,255,0.07)" : "#E2E8F0";
+  const textPrimary = isDark ? "#F8FAFC" : "#0B1D35";
+  const textSub     = isDark ? "rgba(248,250,252,0.60)" : "#4A6080";
+  const textMuted   = isDark ? "rgba(248,250,252,0.38)" : "#8AA0BD";
+  const pillabBg    = isDark ? "#0B1D35" : "#FFFFFF";
+  const pillBorder  = isDark ? "rgba(255,255,255,0.07)" : "#E2E8F0";
+  const missionBg   = isDark ? "#0E2344" : "#FFFFFF";
+
   return (
-    <main style={{ paddingTop: 70 }}>
-      {/* ── HEADER BANNER ────────────────────────────────────── */}
-      <section
-        style={{
-          background: "#0B1D35",
-          paddingTop: 88,
-          paddingBottom: 88,
-        }}
-        className="px-6 lg:px-12"
-      >
-        <div className="max-w-7xl mx-auto max-w-3xl">
-          <p
-            className="font-bold tracking-[0.14em] uppercase mb-5"
-            style={{ fontSize: "0.6875rem", color: "#38BDF8" }}
-          >
+    <main style={{ paddingTop: 72 }}>
+      {/* ── HEADER BANNER ─────────────────────────────────────── */}
+      <section style={{ background: "#0B1D35", paddingTop: 88, paddingBottom: 88 }} className="px-6 lg:px-12">
+        <div className="max-w-7xl mx-auto">
+          <p className="font-bold tracking-[0.14em] uppercase mb-5" style={{ fontSize: "0.6875rem", color: "#38BDF8" }}>
             About Allverze
           </p>
           <h1
@@ -136,26 +127,16 @@ export default function About({ navigate }: AboutProps) {
             A Universe of Unlimited{" "}
             <span style={{ color: "#38BDF8" }}>Possibilities</span>
           </h1>
-          <p
-            style={{
-              marginTop: 20,
-              fontSize: "1.0625rem",
-              color: "rgba(248,250,252,0.58)",
-              lineHeight: 1.75,
-              maxWidth: 560,
-            }}
-          >
+          <p style={{ marginTop: 20, fontSize: "1.0625rem", color: "rgba(248,250,252,0.58)", lineHeight: 1.75, maxWidth: 560 }}>
             <strong style={{ color: "rgba(248,250,252,0.82)", fontWeight: 600 }}>All</strong> — the breadth of every solution imaginable.{" "}
-            <strong style={{ color: "rgba(248,250,252,0.82)", fontWeight: 600 }}>Verze</strong> — a universe of possibilities, boundless and ever-expanding. Together: your partner from A to Z.
+            <strong style={{ color: "rgba(248,250,252,0.82)", fontWeight: 600 }}>Verze</strong> — a universe of possibilities, boundless and ever-expanding.
+            Together: your partner from A to Z.
           </p>
         </div>
       </section>
 
-      {/* ── ORBITAL RING STORY ──────────────────────────────── */}
-      <section
-        style={{ background: "#F8FAFC", paddingTop: 96, paddingBottom: 96 }}
-        className="px-6 lg:px-12"
-      >
+      {/* ── ORBITAL RING STORY ────────────────────────────────── */}
+      <section style={{ background: pageBg, paddingTop: 96, paddingBottom: 96 }} className="px-6 lg:px-12">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="flex justify-center">
             <div className="orbital-float">
@@ -165,69 +146,31 @@ export default function About({ navigate }: AboutProps) {
 
           <div className="flex flex-col gap-7">
             <div>
-              <p
-                className="font-bold tracking-[0.14em] uppercase mb-3"
-                style={{ fontSize: "0.6875rem", color: "#0055E5" }}
-              >
+              <p className="font-bold tracking-[0.14em] uppercase mb-3" style={{ fontSize: "0.6875rem", color: "#0055E5" }}>
                 The Orbital Ring
               </p>
-              <h2
-                style={{
-                  fontSize: "clamp(1.75rem, 3vw, 2.3rem)",
-                  fontWeight: 700,
-                  color: "#0B1D35",
-                  letterSpacing: "-0.02em",
-                  lineHeight: 1.2,
-                }}
-              >
+              <h2 style={{ fontSize: "clamp(1.75rem, 3vw, 2.3rem)", fontWeight: 700, color: textPrimary, letterSpacing: "-0.02em", lineHeight: 1.2 }}>
                 A Symbol of the Connected Ecosystem
               </h2>
             </div>
 
             <div className="flex flex-col gap-6">
               {[
-                {
-                  label: "Continuous Connection",
-                  desc: "The infinite loop represents our commitment to unbroken partnership — no hand-offs, no gaps, no disappearing acts post-launch.",
-                },
-                {
-                  label: "Navy → Blue → Cyan",
-                  desc: "The gradient reflects our journey: from the depth of foundational expertise to the clarity of innovative breakthrough.",
-                },
-                {
-                  label: "Technology & Collaboration",
-                  desc: "Two interlocking arcs reflect the union of technical mastery and human-centred advisory — always in motion, always together.",
-                },
-                {
-                  label: "Better Every Day",
-                  desc: "The ring never ends, just as our pursuit of continuous improvement never stops. Every orbit brings new insight.",
-                },
+                { label: "Continuous Connection", desc: "The infinite loop represents our commitment to unbroken partnership — no hand-offs, no gaps, no disappearing acts post-launch." },
+                { label: "Navy → Blue → Cyan",    desc: "The gradient reflects our journey: from the depth of foundational expertise to the clarity of innovative breakthrough." },
+                { label: "Technology & Collaboration", desc: "Two interlocking arcs reflect the union of technical mastery and human-centred advisory — always in motion, always together." },
+                { label: "Better Every Day",       desc: "The ring never ends, just as our pursuit of continuous improvement never stops. Every orbit brings new insight." },
               ].map((item) => (
                 <div key={item.label} className="flex gap-4">
                   <div
                     style={{
-                      width: 6,
-                      height: 6,
-                      borderRadius: "50%",
-                      background: "#0055E5",
-                      flexShrink: 0,
-                      marginTop: 8,
+                      width: 6, height: 6, borderRadius: "50%",
+                      background: "#0055E5", flexShrink: 0, marginTop: 8,
                     }}
                   />
                   <div>
-                    <div
-                      style={{
-                        fontSize: "0.9rem",
-                        fontWeight: 700,
-                        color: "#0B1D35",
-                        marginBottom: 4,
-                      }}
-                    >
-                      {item.label}
-                    </div>
-                    <p style={{ fontSize: "0.875rem", color: "#4A6080", lineHeight: 1.7 }}>
-                      {item.desc}
-                    </p>
+                    <div style={{ fontSize: "0.9rem", fontWeight: 700, color: textPrimary, marginBottom: 4 }}>{item.label}</div>
+                    <p style={{ fontSize: "0.875rem", color: textSub, lineHeight: 1.7 }}>{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -236,74 +179,33 @@ export default function About({ navigate }: AboutProps) {
         </div>
       </section>
 
-      {/* ── MISSION & VISION ────────────────────────────────── */}
-      <section
-        style={{ background: "#0B1D35", paddingTop: 96, paddingBottom: 96 }}
-        className="px-6 lg:px-12"
-      >
+      {/* ── MISSION & VISION ──────────────────────────────────── */}
+      <section style={{ background: "#0B1D35", paddingTop: 96, paddingBottom: 96 }} className="px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="mb-14">
-            <p
-              className="font-bold tracking-[0.14em] uppercase mb-3"
-              style={{ fontSize: "0.6875rem", color: "#38BDF8" }}
-            >
+            <p className="font-bold tracking-[0.14em] uppercase mb-3" style={{ fontSize: "0.6875rem", color: "#38BDF8" }}>
               Purpose & Direction
             </p>
-            <h2
-              style={{
-                fontSize: "clamp(1.9rem, 3.5vw, 2.5rem)",
-                fontWeight: 700,
-                color: "#F8FAFC",
-                letterSpacing: "-0.02em",
-              }}
-            >
+            <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.5rem)", fontWeight: 700, color: "#F8FAFC", letterSpacing: "-0.02em" }}>
               Mission & Vision
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* Vision — dark card */}
+            {/* Vision */}
             <div
-              style={{
-                background: "#0E2344",
-                border: "1px solid rgba(56,189,248,0.20)",
-                borderRadius: 14,
-                padding: "40px 40px",
-              }}
+              style={{ background: "#0E2344", border: "1px solid rgba(56,189,248,0.20)", borderRadius: 16, padding: "40px" }}
               className="flex flex-col gap-5"
             >
               <div className="flex items-center gap-3">
-                <div
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 8,
-                    background: "rgba(56,189,248,0.12)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#38BDF8",
-                  }}
-                >
+                <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(56,189,248,0.12)", display: "flex", alignItems: "center", justifyContent: "center", color: "#38BDF8" }}>
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" />
                   </svg>
                 </div>
-                <span
-                  style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#38BDF8" }}
-                >
-                  Vision
-                </span>
+                <span style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#38BDF8" }}>Vision</span>
               </div>
-              <h3
-                style={{
-                  fontSize: "1.2rem",
-                  fontWeight: 700,
-                  color: "#F8FAFC",
-                  lineHeight: 1.45,
-                  letterSpacing: "-0.01em",
-                }}
-              >
+              <h3 style={{ fontSize: "1.2rem", fontWeight: 700, color: "#F8FAFC", lineHeight: 1.45, letterSpacing: "-0.01em" }}>
                 To be the most trusted technology partner connecting innovation, expertise, and integrity — worldwide.
               </h3>
               <p style={{ fontSize: "0.875rem", color: "rgba(248,250,252,0.50)", lineHeight: 1.75 }}>
@@ -311,48 +213,20 @@ export default function About({ navigate }: AboutProps) {
               </p>
             </div>
 
-            {/* Mission — white card */}
+            {/* Mission */}
             <div
-              style={{
-                background: "#FFFFFF",
-                border: "1px solid #E2E8F0",
-                borderRadius: 14,
-                padding: "40px 40px",
-              }}
+              style={{ background: missionBg, border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "#E2E8F0"}`, borderRadius: 16, padding: "40px" }}
               className="flex flex-col gap-5"
             >
               <div className="flex items-center gap-3">
-                <div
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 8,
-                    background: "rgba(0,85,229,0.09)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#0055E5",
-                  }}
-                >
+                <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(0,85,229,0.09)", display: "flex", alignItems: "center", justifyContent: "center", color: "#0055E5" }}>
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
                     <circle cx="12" cy="12" r="10" /><path d="M12 8v4l3 3" />
                   </svg>
                 </div>
-                <span
-                  style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#0055E5" }}
-                >
-                  Mission
-                </span>
+                <span style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#0055E5" }}>Mission</span>
               </div>
-              <h3
-                style={{
-                  fontSize: "1.1rem",
-                  fontWeight: 700,
-                  color: "#0B1D35",
-                  lineHeight: 1.45,
-                  letterSpacing: "-0.01em",
-                }}
-              >
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: isDark ? "#F8FAFC" : "#0B1D35", lineHeight: 1.45, letterSpacing: "-0.01em" }}>
                 Four pillars that define how we show up for every client, every day.
               </h3>
               <ol className="flex flex-col gap-3.5">
@@ -365,23 +239,16 @@ export default function About({ navigate }: AboutProps) {
                   <li key={i} className="flex gap-3 items-start">
                     <span
                       style={{
-                        width: 22,
-                        height: 22,
-                        borderRadius: 6,
-                        background: "rgba(0,85,229,0.09)",
-                        color: "#0055E5",
-                        fontSize: "0.7rem",
-                        fontWeight: 700,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                        marginTop: 1,
+                        width: 22, height: 22, borderRadius: 6,
+                        background: "rgba(0,85,229,0.09)", color: "#0055E5",
+                        fontSize: "0.7rem", fontWeight: 700,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        flexShrink: 0, marginTop: 1,
                       }}
                     >
                       {i + 1}
                     </span>
-                    <p style={{ fontSize: "0.875rem", color: "#475569", lineHeight: 1.65 }}>{pillar}</p>
+                    <p style={{ fontSize: "0.875rem", color: isDark ? "rgba(248,250,252,0.62)" : "#475569", lineHeight: 1.65 }}>{pillar}</p>
                   </li>
                 ))}
               </ol>
@@ -390,26 +257,14 @@ export default function About({ navigate }: AboutProps) {
         </div>
       </section>
 
-      {/* ── ONE STANDARD OF EXCELLENCE ──────────────────────── */}
-      <section
-        style={{ background: "#F8FAFC", paddingTop: 72, paddingBottom: 72 }}
-        className="px-6 lg:px-12"
-      >
+      {/* ── ONE STANDARD OF EXCELLENCE ────────────────────────── */}
+      <section style={{ background: pageBg, paddingTop: 72, paddingBottom: 72 }} className="px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="mb-10 text-center">
-            <h2
-              style={{
-                fontSize: "clamp(1.6rem, 3vw, 2.1rem)",
-                fontWeight: 700,
-                color: "#0B1D35",
-                letterSpacing: "-0.02em",
-              }}
-            >
+            <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.1rem)", fontWeight: 700, color: textPrimary, letterSpacing: "-0.02em" }}>
               One Standard of Excellence
             </h2>
-            <p style={{ marginTop: 8, fontSize: "0.875rem", color: "#6B8CAE" }}>
-              Five pillars. Indivisible.
-            </p>
+            <p style={{ marginTop: 8, fontSize: "0.875rem", color: textMuted }}>Five pillars. Indivisible.</p>
           </div>
 
           <div className="flex flex-wrap justify-center gap-3">
@@ -417,31 +272,21 @@ export default function About({ navigate }: AboutProps) {
               <div key={pillar} className="flex items-center gap-3">
                 <div
                   style={{
-                    background: "#FFFFFF",
-                    border: "1px solid #E2E8F0",
+                    background: pillabBg,
+                    border: `1px solid ${pillBorder}`,
                     borderRadius: 10,
                     padding: "14px 24px",
                     display: "flex",
                     alignItems: "center",
                     gap: 10,
-                    boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
+                    boxShadow: isDark ? "0 1px 4px rgba(0,0,0,0.20)" : "0 1px 4px rgba(0,0,0,0.05)",
                   }}
                 >
-                  <div
-                    style={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: "50%",
-                      background: "linear-gradient(135deg, #0055E5, #38BDF8)",
-                      flexShrink: 0,
-                    }}
-                  />
-                  <span style={{ fontSize: "0.875rem", fontWeight: 600, color: "#0B1D35" }}>
-                    {pillar}
-                  </span>
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: "linear-gradient(135deg, #0055E5, #38BDF8)", flexShrink: 0 }} />
+                  <span style={{ fontSize: "0.875rem", fontWeight: 600, color: textPrimary }}>{pillar}</span>
                 </div>
                 {i < pillars.length - 1 && (
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={isDark ? "rgba(255,255,255,0.20)" : "#CBD5E1"} strokeWidth="2.5" strokeLinecap="round">
                     <path d="M9 18l6-6-6-6" />
                   </svg>
                 )}
@@ -451,27 +296,14 @@ export default function About({ navigate }: AboutProps) {
         </div>
       </section>
 
-      {/* ── CORE VALUES ─────────────────────────────────────── */}
-      <section
-        style={{ background: "#0B1D35", paddingTop: 96, paddingBottom: 96 }}
-        className="px-6 lg:px-12"
-      >
+      {/* ── CORE VALUES ───────────────────────────────────────── */}
+      <section style={{ background: "#0B1D35", paddingTop: 96, paddingBottom: 96 }} className="px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="mb-14">
-            <p
-              className="font-bold tracking-[0.14em] uppercase mb-3"
-              style={{ fontSize: "0.6875rem", color: "#38BDF8" }}
-            >
+            <p className="font-bold tracking-[0.14em] uppercase mb-3" style={{ fontSize: "0.6875rem", color: "#38BDF8" }}>
               What We Stand For
             </p>
-            <h2
-              style={{
-                fontSize: "clamp(1.9rem, 3.5vw, 2.5rem)",
-                fontWeight: 700,
-                color: "#F8FAFC",
-                letterSpacing: "-0.02em",
-              }}
-            >
+            <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.5rem)", fontWeight: 700, color: "#F8FAFC", letterSpacing: "-0.02em" }}>
               6 Core Values
             </h2>
           </div>
@@ -480,38 +312,16 @@ export default function About({ navigate }: AboutProps) {
             {coreValues.map((v) => (
               <div
                 key={v.title}
-                className="flex flex-col gap-4 transition-colors duration-200"
-                style={{
-                  background: "#0E2344",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  borderRadius: 12,
-                  padding: "28px 28px",
-                }}
+                className="flex flex-col gap-4"
+                style={{ background: "#0E2344", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 14, padding: "28px" }}
               >
-                <div
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 8,
-                    background: "rgba(0,85,229,0.18)",
-                    color: "#38BDF8",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
+                <div style={{ width: 40, height: 40, borderRadius: 8, background: "rgba(0,85,229,0.18)", color: "#38BDF8", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   {v.icon}
                 </div>
                 <div>
-                  <div style={{ fontSize: "1rem", fontWeight: 700, color: "#F8FAFC", marginBottom: 2 }}>
-                    {v.title}
-                  </div>
-                  <div style={{ fontSize: "0.75rem", color: "#38BDF8", fontStyle: "italic", marginBottom: 10 }}>
-                    "{v.quote}"
-                  </div>
-                  <p style={{ fontSize: "0.855rem", color: "rgba(248,250,252,0.48)", lineHeight: 1.7 }}>
-                    {v.desc}
-                  </p>
+                  <div style={{ fontSize: "1rem", fontWeight: 700, color: "#F8FAFC", marginBottom: 2 }}>{v.title}</div>
+                  <div style={{ fontSize: "0.75rem", color: "#38BDF8", fontStyle: "italic", marginBottom: 10 }}>&quot;{v.quote}&quot;</div>
+                  <p style={{ fontSize: "0.855rem", color: "rgba(248,250,252,0.48)", lineHeight: 1.7 }}>{v.desc}</p>
                 </div>
               </div>
             ))}
@@ -519,79 +329,49 @@ export default function About({ navigate }: AboutProps) {
         </div>
       </section>
 
-      {/* ── LEADERSHIP ──────────────────────────────────────── */}
-      <section
-        style={{ background: "#F8FAFC", paddingTop: 96, paddingBottom: 96 }}
-        className="px-6 lg:px-12"
-      >
+      {/* ── TEAM ──────────────────────────────────────────────── */}
+      <section style={{ background: pageBg, paddingTop: 96, paddingBottom: 96 }} className="px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="mb-14">
-            <p
-              className="font-bold tracking-[0.14em] uppercase mb-3"
-              style={{ fontSize: "0.6875rem", color: "#0055E5" }}
-            >
+            <p className="font-bold tracking-[0.14em] uppercase mb-3" style={{ fontSize: "0.6875rem", color: "#0055E5" }}>
               Leadership & Governance
             </p>
-            <h2
-              style={{
-                fontSize: "clamp(1.9rem, 3.5vw, 2.5rem)",
-                fontWeight: 700,
-                color: "#0B1D35",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Executive Team
+            <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.5rem)", fontWeight: 700, color: textPrimary, letterSpacing: "-0.02em" }}>
+              Our Team
             </h2>
-            <p style={{ marginTop: 10, fontSize: "0.9375rem", color: "#4A6080" }}>
+            <p style={{ marginTop: 10, fontSize: "0.9375rem", color: textSub }}>
               Seasoned leaders with the depth to solve, not just advise.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {executives.map((exec) => (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl">
+            {team.map((member) => (
               <div
-                key={exec.name}
+                key={member.name}
                 className="group flex flex-col overflow-hidden transition-all duration-200 hover:-translate-y-1"
                 style={{
-                  background: "#FFFFFF",
-                  border: "1px solid #E2E8F0",
-                  borderRadius: 14,
-                  boxShadow: "0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.04)",
+                  background: cardBg,
+                  border: `1px solid ${cardBorder}`,
+                  borderRadius: 16,
+                  boxShadow: isDark
+                    ? "0 2px 12px rgba(0,0,0,0.30)"
+                    : "0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.04)",
                 }}
               >
-                <div
-                  style={{
-                    height: 200,
-                    background: "#DBEAFE",
-                    overflow: "hidden",
-                  }}
-                >
+                <div style={{ height: 220, background: isDark ? "#0E2344" : "#DBEAFE", overflow: "hidden" }}>
                   <img
-                    src={exec.photo}
-                    alt={exec.name}
+                    src={member.photo}
+                    alt={member.name}
                     className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
                 <div className="flex flex-col gap-2 p-5 flex-1">
                   <div>
-                    <div style={{ fontSize: "0.9375rem", fontWeight: 700, color: "#0B1D35" }}>
-                      {exec.name}
-                    </div>
-                    <div style={{ fontSize: "0.775rem", fontWeight: 600, color: "#0055E5", marginTop: 1 }}>
-                      {exec.title}
-                    </div>
+                    <div style={{ fontSize: "0.9375rem", fontWeight: 700, color: textPrimary }}>{member.name}</div>
+                    <div style={{ fontSize: "0.775rem", fontWeight: 600, color: "#0055E5", marginTop: 1 }}>{member.title}</div>
                   </div>
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      color: "#6B8CAE",
-                      background: "#EFF4FF",
-                      borderRadius: 4,
-                      padding: "2px 8px",
-                      alignSelf: "flex-start",
-                    }}
-                  >
-                    {exec.domain}
+                  <div style={{ fontSize: "0.75rem", color: isDark ? "#7AABFF" : "#6B8CAE", background: isDark ? "rgba(0,85,229,0.14)" : "#EFF4FF", borderRadius: 4, padding: "2px 8px", alignSelf: "flex-start" }}>
+                    {member.domain}
                   </div>
                   <button
                     className="mt-auto flex items-center gap-1.5 text-xs font-semibold hover:underline focus-visible:outline-none transition-colors"
@@ -611,39 +391,19 @@ export default function About({ navigate }: AboutProps) {
         </div>
       </section>
 
-      {/* ── CTA STRIP ───────────────────────────────────────── */}
+      {/* ── CTA STRIP ─────────────────────────────────────────── */}
       <section
-        style={{
-          background: "#0B1D35",
-          borderTop: "1px solid rgba(0,85,229,0.14)",
-          paddingTop: 72,
-          paddingBottom: 72,
-        }}
+        style={{ background: "#0B1D35", borderTop: "1px solid rgba(0,85,229,0.14)", paddingTop: 72, paddingBottom: 72 }}
         className="px-6 lg:px-12"
       >
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
-          <div>
-            <h2
-              style={{
-                fontSize: "clamp(1.6rem, 3vw, 2.1rem)",
-                fontWeight: 700,
-                color: "#F8FAFC",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Ready to work with a team that solves, not just sells?
-            </h2>
-          </div>
+          <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.1rem)", fontWeight: 700, color: "#F8FAFC", letterSpacing: "-0.02em" }}>
+            Ready to work with a team that solves, not just sells?
+          </h2>
           <button
             onClick={() => navigate("contact")}
             className="flex-shrink-0 text-sm font-semibold text-white transition-all duration-150 hover:opacity-90 active:scale-[0.98]"
-            style={{
-              background: "#0055E5",
-              borderRadius: 8,
-              padding: "12px 28px",
-              boxShadow: "0 2px 12px rgba(0,85,229,0.28)",
-              whiteSpace: "nowrap",
-            }}
+            style={{ background: "#0055E5", borderRadius: 9, padding: "12px 28px", boxShadow: "0 2px 12px rgba(0,85,229,0.28)", whiteSpace: "nowrap" }}
           >
             Start the Conversation →
           </button>

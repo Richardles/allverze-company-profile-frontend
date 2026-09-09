@@ -48,16 +48,13 @@ export default function OrbitalRing({ size = 480, className = "" }: OrbitalRingP
         </filter>
       </defs>
 
-      {/* Ambient background glow */}
       <circle cx={cx} cy={cy} r={size * 0.42} fill={`url(#${id}-glow)`} className="glow-pulse" />
 
-      {/* Outer ghost rings */}
       <ellipse cx={cx} cy={cy} rx={size * 0.44} ry={size * 0.44} fill="none"
         stroke="#38BDF8" strokeWidth={size * 0.003} opacity="0.10" />
       <ellipse cx={cx} cy={cy} rx={size * 0.38} ry={size * 0.38} fill="none"
         stroke="#0066FF" strokeWidth={size * 0.002} opacity="0.08" />
 
-      {/* Ring 1 — horizontal orbital, main gradient */}
       <g style={{ transformOrigin: `${cx}px ${cy}px` }}>
         <ellipse cx={cx} cy={cy} rx={size * 0.40} ry={size * 0.155} fill="none"
           stroke={`url(#${id}-g1)`} strokeWidth={size * 0.028}
@@ -68,7 +65,6 @@ export default function OrbitalRing({ size = 480, className = "" }: OrbitalRingP
         </ellipse>
       </g>
 
-      {/* Ring 2 — tilted 60°, reverse */}
       <g>
         <ellipse cx={cx} cy={cy} rx={size * 0.40} ry={size * 0.155}
           transform={`rotate(60,${cx},${cy})`}
@@ -80,7 +76,6 @@ export default function OrbitalRing({ size = 480, className = "" }: OrbitalRingP
         </ellipse>
       </g>
 
-      {/* Ring 3 — tilted -60°, slower */}
       <g>
         <ellipse cx={cx} cy={cy} rx={size * 0.40} ry={size * 0.155}
           transform={`rotate(-60,${cx},${cy})`}
@@ -92,12 +87,10 @@ export default function OrbitalRing({ size = 480, className = "" }: OrbitalRingP
         </ellipse>
       </g>
 
-      {/* Center core */}
       <circle cx={cx} cy={cy} r={size * 0.045} fill="#38BDF8" opacity="0.2" filter={`url(#${id}-softglow)`} />
       <circle cx={cx} cy={cy} r={size * 0.028} fill="#38BDF8" opacity="0.95" filter={`url(#${id}-blur)`} />
       <circle cx={cx} cy={cy} r={size * 0.014} fill="#FFFFFF" opacity="0.98" />
 
-      {/* Traveling node on ring 1 */}
       <circle r={size * 0.020} fill="#38BDF8" filter={`url(#${id}-blur)`}>
         <animateMotion dur="14s" repeatCount="indefinite">
           <mpath href={`#${id}-path1`} />

@@ -9,24 +9,16 @@ body,
 }
 
 @theme {
-  --color-navy: #0B1D35;
-  --color-navy-mid: #122040;
-  --color-navy-card: #182B4A;
-  --color-blue: #0055E5;
-  --color-cyan: #38BDF8;
-  --color-slate: #F8FAFC;
-  --color-border: #E2E8F0;
   --font-sans: 'Plus Jakarta Sans', sans-serif;
 }
 
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background-color: #0B1D35;
-  color: #F8FAFC;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ── Animations ──────────────────────────────────────────── */
 @keyframes ticker {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
@@ -37,9 +29,9 @@ body {
   50%       { transform: translateY(-12px); }
 }
 
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
 }
 
 .ticker-track {
@@ -53,19 +45,23 @@ body {
   animation: float-y 8s ease-in-out infinite;
 }
 
-/* Scrollbar */
+.glow-pulse {
+  animation: glow-pulse 4s ease-in-out infinite;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 85, 229, 0.25);
+  background: rgba(0,85,229,0.25);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 85, 229, 0.5);
+  background: rgba(0,85,229,0.5);
 }
 
-/* Focus ring — accessible, on-brand */
+/* ── Focus ring ──────────────────────────────────────────── */
 :focus-visible {
   outline: 2px solid #0055E5;
-  outline-offset: 3px;
+  outline-offset: 2px;
 }

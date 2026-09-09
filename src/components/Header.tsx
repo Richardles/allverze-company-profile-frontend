@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import { useTheme } from "../ThemeContext";
 import type { Page } from "../App";
-import allverzeLogo from "../assets/Allverze Logo.png";
+import allverzeLogo from "../imports/Allverze_white7.png";
 
 interface HeaderProps {
   current: Page;
@@ -15,6 +16,7 @@ const navLinks: { label: string; page: Page }[] = [
 ];
 
 export default function Header({ current, navigate }: HeaderProps) {
+  const { isDark, toggle } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -24,26 +26,31 @@ export default function Header({ current, navigate }: HeaderProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const headerBg = isDark
+    ? scrolled ? "rgba(6,14,26,0.98)" : "rgba(6,14,26,0.92)"
+    : scrolled ? "rgba(255,255,255,0.97)" : "rgba(255,255,255,0.90)";
+
+  const headerBorder = isDark
+    ? scrolled ? "1px solid rgba(56,189,248,0.14)" : "1px solid rgba(56,189,248,0.08)"
+    : scrolled ? "1px solid rgba(14,30,54,0.12)" : "1px solid rgba(14,30,54,0.06)";
+
+  const navColor = isDark ? "rgba(248,250,252,0.75)" : "#1E3A5F";
+  const mobileMenuBg = isDark ? "rgba(6,14,26,0.99)" : "rgba(255,255,255,0.99)";
+
   return (
     <header
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
-        background: scrolled
-          ? "rgba(255,255,255,0.94)"
-          : "rgba(255,255,255,0.88)",
-        backdropFilter: "blur(18px)",
-        WebkitBackdropFilter: "blur(18px)",
-        borderBottom: scrolled
-          ? "1px solid rgba(14,30,54,0.10)"
-          : "1px solid rgba(14,30,54,0.06)",
-        boxShadow: scrolled
-          ? "0 2px 20px rgba(0,0,0,0.08)"
-          : "none",
+        background: headerBg,
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        borderBottom: headerBorder,
+        boxShadow: scrolled ? "0 2px 24px rgba(0,0,0,0.10)" : "none",
       }}
     >
       <div
         className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between"
-        style={{ height: 70 }}
+        style={{ height: 72 }}
       >
         {/* Logo */}
         <button
@@ -54,7 +61,12 @@ export default function Header({ current, navigate }: HeaderProps) {
           <img
             src={allverzeLogo}
             alt="Allverze Corporation"
-            className="h-9 w-auto object-contain"
+            style={{
+              height: 48,
+              width: "auto",
+              objectFit: "contain",
+              filter: isDark ? "brightness(0) invert(1)" : "none",
+            }}
           />
         </button>
 
@@ -66,7 +78,7 @@ export default function Header({ current, navigate }: HeaderProps) {
               onClick={() => navigate(page)}
               className="relative px-4 py-2 text-sm font-semibold transition-colors duration-150 focus-visible:outline-none"
               style={{
-                color: current === page ? "#0055E5" : "#1E3A5F",
+                color: current === page ? "#0055E5" : navColor,
                 borderRadius: 6,
               }}
             >
@@ -74,54 +86,107 @@ export default function Header({ current, navigate }: HeaderProps) {
               {current === page && (
                 <span
                   className="absolute bottom-0.5 left-4 right-4 h-0.5"
-                  style={{
-                    background: "#0055E5",
-                    borderRadius: 2,
-                  }}
+                  style={{ background: "#0055E5", borderRadius: 2 }}
                 />
               )}
             </button>
           ))}
         </nav>
 
-        {/* CTA */}
-        <button
-          onClick={() => navigate("contact")}
-          className="hidden md:inline-flex items-center gap-2 text-sm font-semibold text-white transition-all duration-150 hover:opacity-90 active:scale-[0.98]"
-          style={{
-            background: "#0055E5",
-            borderRadius: 8,
-            padding: "9px 22px",
-            boxShadow: "0 2px 8px rgba(0,85,229,0.28)",
-          }}
-        >
-          Connect With Us
-        </button>
+        {/* Right controls */}
+        <div className="hidden md:flex items-center gap-3">
+          <button
+            onClick={() => navigate("contact")}
+            className="inline-flex items-center gap-2 text-sm font-semibold text-white transition-all duration-150 hover:opacity-90 active:scale-[0.98]"
+            style={{
+              background: "#0055E5",
+              borderRadius: 9,
+              padding: "9px 22px",
+              boxShadow: "0 2px 12px rgba(0,85,229,0.32)",
+            }}
+          >
+            Connect With Us
+          </button>
 
-        {/* Mobile toggle */}
-        <button
-          className="md:hidden p-2 focus-visible:outline-none"
-          style={{ color: "#0B1D35", borderRadius: 6 }}
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle navigation menu"
-        >
-          {menuOpen ? (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
-          ) : (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M3 12h18M3 6h18M3 18h18" />
-            </svg>
-          )}
-        </button>
+          {/* Theme toggle */}
+          <button
+            onClick={toggle}
+            className="flex items-center justify-center transition-all duration-200 hover:scale-105"
+            style={{
+              width: 38,
+              height: 38,
+              borderRadius: 9,
+              background: isDark ? "rgba(56,189,248,0.10)" : "rgba(0,85,229,0.07)",
+              border: isDark ? "1px solid rgba(56,189,248,0.22)" : "1px solid rgba(0,85,229,0.15)",
+              color: isDark ? "#38BDF8" : "#0055E5",
+            }}
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {isDark ? (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+              </svg>
+            ) : (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            )}
+          </button>
+        </div>
+
+        {/* Mobile controls */}
+        <div className="md:hidden flex items-center gap-2">
+          <button
+            onClick={toggle}
+            className="flex items-center justify-center"
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 8,
+              background: isDark ? "rgba(56,189,248,0.10)" : "rgba(0,85,229,0.07)",
+              color: isDark ? "#38BDF8" : "#0055E5",
+            }}
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {isDark ? (
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+              </svg>
+            ) : (
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            )}
+          </button>
+          <button
+            className="p-2 focus-visible:outline-none"
+            style={{ color: isDark ? "#F8FAFC" : "#0B1D35", borderRadius: 6 }}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle navigation menu"
+          >
+            {menuOpen ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M3 12h18M3 6h18M3 18h18" />
+              </svg>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
       {menuOpen && (
         <div
           className="md:hidden flex flex-col px-6 py-5 gap-1"
-          style={{ borderTop: "1px solid rgba(14,30,54,0.08)", background: "rgba(255,255,255,0.97)" }}
+          style={{
+            borderTop: isDark ? "1px solid rgba(56,189,248,0.10)" : "1px solid rgba(14,30,54,0.08)",
+            background: mobileMenuBg,
+          }}
         >
           {navLinks.map(({ label, page }) => (
             <button
@@ -129,9 +194,11 @@ export default function Header({ current, navigate }: HeaderProps) {
               onClick={() => { navigate(page); setMenuOpen(false); }}
               className="text-sm font-semibold text-left px-3 py-2.5 transition-colors"
               style={{
-                color: current === page ? "#0055E5" : "#1E3A5F",
+                color: current === page ? "#0055E5" : navColor,
                 borderRadius: 6,
-                background: current === page ? "rgba(0,85,229,0.06)" : "transparent",
+                background: current === page
+                  ? (isDark ? "rgba(0,85,229,0.12)" : "rgba(0,85,229,0.06)")
+                  : "transparent",
               }}
             >
               {label}
