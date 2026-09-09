@@ -21,7 +21,7 @@ const faqs = [
   },
 ];
 
-const intents = ["Build New Solution", "Mobile App Development", "Performance Testing", "Advisory Audit"];
+const intents = ["Build New Solution", "Mobile App Development", "Performance Testing", "Advisory Audit", "Others"];
 
 interface ContactProps {
   navigate: (page: Page) => void;
@@ -31,10 +31,12 @@ export default function Contact({ navigate: _navigate }: ContactProps) {
   const { isDark } = useTheme();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [intent, setIntent] = useState(intents[0]);
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
+  const [confirmation, setConfirmation] = useState<"sent" | "failed" | null>(null);
+  const [leadRef, setLeadRef] = useState<string | null>(null);
 
   const pageBg      = isDark ? "#060E1A" : "#F8FAFC";
   const cardBg      = isDark ? "#0B1D35" : "#FFFFFF";
@@ -223,8 +225,56 @@ export default function Contact({ navigate: _navigate }: ContactProps) {
                   <p style={{ marginTop: 6, fontSize: "0.875rem", color: textSub, maxWidth: 300 }}>
                     A Solutions Engineer will be in touch within one business day.
                   </p>
+                  {leadRef && (
+                    <div
+                      style={{
+                        width: "100%",
+                        maxWidth: 320,
+                        marginTop: 16,
+                        border: `1px dashed ${isDark ? "rgba(56,189,248,0.35)" : "rgba(0,85,229,0.35)"}`,
+                        background: isDark ? "rgba(56,189,248,0.06)" : "rgba(0,85,229,0.05)",
+                        borderRadius: 12,
+                        padding: "12px 20px",
+                        textAlign: "center",
+                      }}
+                    >
+                      <div style={{ fontSize: "0.6875rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>
+                        Your Reference Number
+                      </div>
+                      <div
+                        style={{
+                          marginTop: 4,
+                          fontSize: "0.9375rem",
+                          fontWeight: 700,
+                          letterSpacing: "0.02em",
+                          fontFamily: "'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace",
+                          color: isDark ? "#38BDF8" : "#0055E5",
+                        }}
+                      >
+                        {leadRef}
+                      </div>
+                    </div>
+                  )}
+                  {confirmation === "sent" && (
+                    <p style={{ fontSize: "0.8125rem", color: textMuted, maxWidth: 300 }}>
+                      A confirmation email has been sent to {form.email}.
+                    </p>
+                  )}
+                  {confirmation === "failed" && (
+                    <p style={{ fontSize: "0.8125rem", color: textMuted, maxWidth: 300 }}>
+                      Your message was received, but our confirmation email could not be delivered.
+                    </p>
+                  )}
                 </div>
-                <button onClick={() => setSubmitted(false)} className="text-sm font-semibold hover:underline" style={{ color: "#0055E5" }}>
+                <button
+                  onClick={() => {
+                    setSubmitted(false);
+                    setConfirmation(null);
+                    setLeadRef(null);
+                  }}
+                  className="text-sm font-semibold hover:underline"
+                  style={{ color: "#0055E5" }}
+                >
                   Send another message
                 </button>
               </div>
@@ -237,6 +287,7 @@ export default function Contact({ navigate: _navigate }: ContactProps) {
                   const body = JSON.stringify({
                     name: form.name,
                     email: form.email,
+                    phone: form.phone,
                     message: `[Intent: ${intent}]\n\n${form.message}`,
                     botcheck: "",
                   });
@@ -247,6 +298,8 @@ export default function Contact({ navigate: _navigate }: ContactProps) {
                   });
                   const data = await res.json();
                   if (data.success) {
+                    setConfirmation(data.confirmation === "failed" ? "failed" : "sent");
+                    setLeadRef(data.leadRef ?? null);
                     setSubmitted(true);
                   } else {
                     setError(data.message || "Something went wrong. Please try again.");
@@ -303,11 +356,23 @@ export default function Contact({ navigate: _navigate }: ContactProps) {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>Work Email</label>
+                  <label style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>Email</label>
                   <input
                     type="email" required placeholder="jane@company.com"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    style={inputBase}
+                    onFocus={(e) => ((e.target as HTMLInputElement).style.borderColor = "#0055E5")}
+                    onBlur={(e) => ((e.target as HTMLInputElement).style.borderColor = isDark ? "rgba(255,255,255,0.10)" : "#DDE4EE")}
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>Phone Number</label>
+                  <input
+                    type="tel" required placeholder="+62 812 345 6789"
+                    value={form.phone}
+                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
                     style={inputBase}
                     onFocus={(e) => ((e.target as HTMLInputElement).style.borderColor = "#0055E5")}
                     onBlur={(e) => ((e.target as HTMLInputElement).style.borderColor = isDark ? "rgba(255,255,255,0.10)" : "#DDE4EE")}
