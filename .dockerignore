@@ -1,0 +1,22 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+dist-ssr
+
+# Environment / secrets — never bake local env files into the image
+.env
+.env.*
+!.env.example
+
+# Local-only / tooling
+AGENTS.md
+.git
+.gitignore
+*.md
+*.local
+
+# Logs
+logs
+*.log

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "../ThemeContext";
-import { API_BASE_URL, WHATSAPP_URL } from "../config";
+import { API_BASE_URL, WHATSAPP_URL, PUBLIC_EMAIL } from "../config";
 
 const faqs = [
   {
@@ -104,7 +104,7 @@ export default function Contact() {
 
             {/* Email */}
             <a
-              href="mailto:allverze.corporation@gmail.com"
+              href={`mailto:${PUBLIC_EMAIL}`}
               className="flex items-center gap-4 transition-all duration-150 hover:-translate-y-0.5"
               style={{
                 background: cardBg,
@@ -123,7 +123,7 @@ export default function Contact() {
               </div>
               <div>
                 <div style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted, marginBottom: 2 }}>Email</div>
-                <div style={{ fontSize: "0.875rem", fontWeight: 600, color: "#0055E5" }}>allverze.corporation@gmail.com</div>
+                <div style={{ fontSize: "0.875rem", fontWeight: 600, color: "#0055E5" }}>{PUBLIC_EMAIL}</div>
               </div>
             </a>
 

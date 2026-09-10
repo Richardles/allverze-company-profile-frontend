@@ -17,6 +17,9 @@ dist-ssr
 .env.*
 !.env.example
 
+# Session memory (local-only, auto-loaded by opencode)
+/AGENTS.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

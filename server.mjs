@@ -5,9 +5,12 @@ import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import nodemailer from 'nodemailer';
 import { randomBytes } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const app = express();
+
+app.set('trust proxy', 1);
 
 const config = {
   port: Number(process.env.PORT || 3001),
@@ -15,8 +18,9 @@ const config = {
   smtpPort: Number(process.env.SMTP_PORT || 587),
   smtpUser: process.env.SMTP_USER,
   smtpPass: process.env.SMTP_PASS,
-  contactEmail: process.env.CONTACT_EMAIL || process.env.SMTP_USER,
-  publicEmail: process.env.PUBLIC_EMAIL || process.env.SMTP_USER,
+  fromEmail: process.env.SMTP_FROM || process.env.PUBLIC_EMAIL || 'team@allverze.com',
+  contactEmail: process.env.CONTACT_EMAIL || 'team@allverze.com',
+  publicEmail: process.env.PUBLIC_EMAIL || 'team@allverze.com',
   whatsappNumber: process.env.WHATSAPP_NUMBER || '6281283812336',
   frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5173',
 };
@@ -29,6 +33,7 @@ if (missingEnv.length > 0) {
 }
 
 const EMAIL_LOGO_PATH = fileURLToPath(new URL('./src/imports/email-logo.png', import.meta.url));
+const EMAIL_LOGO_SRC = `data:image/png;base64,${readFileSync(EMAIL_LOGO_PATH).toString('base64')}`;
 
 function formatWhatsAppDisplay(value) {
   const digits = String(value).replace(/\D/g, '');
@@ -48,12 +53,17 @@ const limiter = rateLimit({
 });
 app.use('/api/contact', limiter);
 
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 const INTENT_CODES = {
-  'Build New Solution': 'BNS',
-  'Mobile App Development': 'MAD',
-  'Performance Testing': 'PT',
-  'Advisory Audit': 'AA',
-  'Others': 'OTH',
+  'Custom Software Engineering': 'CSW',
+  'Mobile Application Development': 'MAD',
+  'Application Performance Monitoring': 'APM',
+  'Performance & Automation Testing': 'PAT',
+  'Discovery & Advisory': 'DAV',
+  'Other': 'OTH',
 };
 
 function pad2(value) {
@@ -164,16 +174,16 @@ app.post('/api/contact', async (req, res) => {
     const waHref = `https://wa.me/${waDigits}?text=${encodeURIComponent(
       `Hi ${name.trim()}, thank you for contacting Allverze. We received your inquiry (${leadRef}) and we're on it. Let's connect!`
     )}`;
+    const waCompanyHref = `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent(
+      `Hi Allverze team, this is ${name.trim()}. I just submitted an inquiry via your website (Reference: ${leadRef}) and I'd be glad to discuss it privately.`
+    )}`;
 
     await sendWithRetry(transporter, {
-      from: `Allverze Website <${config.smtpUser}>`,
+      from: `Allverze Website <${config.fromEmail}>`,
       to: config.contactEmail,
-      envelope: { from: config.smtpUser, to: [config.contactEmail] },
+      envelope: { from: config.fromEmail, to: [config.contactEmail] },
       replyTo: email.trim(),
       subject: `New contact message from ${name.trim()}`,
-      attachments: [
-        { filename: 'allverze-logo.png', path: EMAIL_LOGO_PATH, cid: 'alv-logo' },
-      ],
       text: `NEW CONTACT MESSAGE
 Lead Reference: ${leadRef}
 Received: ${receivedAt}
@@ -203,7 +213,7 @@ RESPONSE SLA: Reply to this customer within 1 business day.`,
           <!-- Header -->
           <tr>
             <td style="background:#0B1D35;padding:36px 40px 28px;text-align:center;">
-              <img src="cid:alv-logo" alt="Allverze" width="210" style="width:210px;height:auto;max-width:60%;display:inline-block;border:0;outline:none;text-decoration:none;" />
+              <img src="${EMAIL_LOGO_SRC}" alt="Allverze" width="210" style="width:210px;height:auto;max-width:60%;display:inline-block;border:0;outline:none;text-decoration:none;" />
               <p style="margin:14px 0 14px;font-size:0.75rem;font-weight:600;color:rgba(255,255,255,0.45);letter-spacing:0.08em;text-transform:uppercase;">New Contact Message</p>
               <div style="display:inline-block;background:rgba(56,189,248,0.15);color:#38BDF8;font-size:0.6875rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:5px 14px;border-radius:999px;border:1px solid rgba(56,189,248,0.25);">New Inquiry</div>
             </td>
@@ -298,7 +308,8 @@ RESPONSE SLA: Reply to this customer within 1 business day.`,
           <tr>
             <td style="background:#F8FAFC;border-top:1px solid #E2E8F0;padding:24px 40px;text-align:center;">
               <p style="margin:0 0 4px;font-size:0.8125rem;font-weight:700;color:#0B1D35;">Allverze Technology</p>
-              <p style="margin:0;font-size:0.75rem;color:#8AA0BD;">Engineering Tomorrow's Solutions</p>
+              <p style="margin:0 0 12px;font-size:0.75rem;color:#8AA0BD;">Engineering Tomorrow's Solutions</p>
+              <p style="margin:0;font-size:0.6875rem;color:#8AA0BD;">New inquiry via <a href="https://allverze.com" style="color:#0055E5;text-decoration:none;font-weight:600;">allverze.com</a></p>
             </td>
           </tr>
 
@@ -316,13 +327,10 @@ RESPONSE SLA: Reply to this customer within 1 business day.`,
     let confirmSent = false;
     try {
       await sendWithRetry(transporter, {
-        from: `Allverze <${config.smtpUser}>`,
+        from: `Allverze <${config.fromEmail}>`,
         to: email.trim(),
-        envelope: { from: config.smtpUser, to: [email.trim()] },
+        envelope: { from: config.fromEmail, to: [email.trim()] },
         subject: `We've received your message — Allverze`,
-        attachments: [
-          { filename: 'allverze-logo.png', path: EMAIL_LOGO_PATH, cid: 'alv-logo' },
-        ],
         text: `Hi ${name.trim()},
 
 Thank you for reaching out to Allverze. We've received your message, and our team will review your inquiry within one business day.
@@ -353,7 +361,7 @@ The Allverze Team`,
           <!-- Header -->
           <tr>
             <td style="background:#0B1D35;padding:36px 40px 28px;text-align:center;">
-              <img src="cid:alv-logo" alt="Allverze" width="210" style="width:210px;height:auto;max-width:60%;display:inline-block;border:0;outline:none;text-decoration:none;" />
+              <img src="${EMAIL_LOGO_SRC}" alt="Allverze" width="210" style="width:210px;height:auto;max-width:60%;display:inline-block;border:0;outline:none;text-decoration:none;" />
               <p style="margin:14px 0 0;font-size:0.75rem;font-weight:600;color:rgba(255,255,255,0.45);letter-spacing:0.08em;text-transform:uppercase;">Technology Solutions</p>
             </td>
           </tr>
@@ -399,20 +407,34 @@ The Allverze Team`,
               </table>
 
               <!-- Contact Section -->
-              <p style="margin:0 0 12px;font-size:0.9375rem;color:#4A6080;line-height:1.7;">Need a faster response? Reach us directly:</p>
-              <table cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+              <p style="margin:0 0 14px;font-size:0.9375rem;color:#4A6080;line-height:1.7;">Need a faster response? Reach us directly:</p>
+              <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width:88px;font-size:0.875rem;font-weight:700;color:#0B1D35;">Email:</td>
-                  <td style="font-size:0.875rem;">
-                    <a href="mailto:${config.publicEmail}" style="color:#0055E5;text-decoration:none;font-weight:600;">${config.publicEmail}</a>
+                  <td style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:0 24px;">
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="padding:16px 0;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#8AA0BD;width:120px;vertical-align:middle;">Email</td>
+                        <td style="padding:16px 0;font-size:0.9375rem;font-weight:700;text-align:right;">
+                          <a href="mailto:${config.publicEmail}" style="color:#0055E5;text-decoration:none;">${config.publicEmail}</a>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #E2E8F0;">
+                      <tr>
+                        <td style="padding:16px 0;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#8AA0BD;width:120px;vertical-align:middle;">WhatsApp</td>
+                        <td style="padding:16px 0;font-size:0.9375rem;font-weight:600;text-align:right;color:#0B1D35;">${formatWhatsAppDisplay(config.whatsappNumber)}</td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
-              <table cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;">
                 <tr>
-                  <td style="width:88px;font-size:0.875rem;font-weight:700;color:#0B1D35;">WhatsApp:</td>
-                  <td style="font-size:0.875rem;">
-                    <a href="https://wa.me/${config.whatsappNumber}" style="color:#0055E5;text-decoration:none;font-weight:600;">${formatWhatsAppDisplay(config.whatsappNumber)}</a>
+                  <td align="center">
+                    <a href="${waCompanyHref}" target="_blank" rel="noopener" style="display:inline-block;background:#0055E5;color:#FFFFFF;font-size:0.9375rem;font-weight:700;text-align:center;text-decoration:none;padding:14px 36px;border-radius:9px;">
+                      Chat With Us on WhatsApp &nbsp;&rarr;
+                    </a>
+                    <p style="margin:10px 0 0;font-size:0.75rem;color:#8AA0BD;">Priority access &middot; Typically responds within minutes</p>
                   </td>
                 </tr>
               </table>
@@ -423,7 +445,8 @@ The Allverze Team`,
           <tr>
             <td style="background:#F8FAFC;border-top:1px solid #E2E8F0;padding:28px 40px;text-align:center;">
               <p style="margin:0 0 4px;font-size:0.8125rem;font-weight:700;color:#0B1D35;">Allverze Technology</p>
-              <p style="margin:0;font-size:0.75rem;color:#8AA0BD;">Engineering Tomorrow's Solutions</p>
+              <p style="margin:0 0 12px;font-size:0.75rem;color:#8AA0BD;">Engineering Tomorrow's Solutions</p>
+              <p style="margin:0;font-size:0.6875rem;color:#8AA0BD;">You reached out through <a href="https://allverze.com" style="color:#0055E5;text-decoration:none;font-weight:600;">allverze.com</a></p>
             </td>
           </tr>
 
