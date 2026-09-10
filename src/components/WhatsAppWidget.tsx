@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { WHATSAPP_URL } from "../config";
 
 export default function WhatsAppWidget() {
   const [hovered, setHovered] = useState(false);
@@ -32,7 +33,7 @@ export default function WhatsAppWidget() {
       </div>
 
       <button
-        onClick={() => window.open("https://wa.me/6281283812336?text=Hello%20Allverze%20team%2C%20I%20would%20like%20to%20inquire%20about%20your%20services%20and%20learn%20more%20about%20how%20your%20solutions%20can%20support%20my%20business.", "_blank", "noopener,noreferrer")}
+        onClick={() => window.open(WHATSAPP_URL, "_blank", "noopener,noreferrer")}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         className="relative flex items-center justify-center rounded-full transition-all duration-200 hover:scale-110 active:scale-95 focus:outline-none"

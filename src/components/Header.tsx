@@ -1,22 +1,18 @@
 import { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useTheme } from "../ThemeContext";
-import type { Page } from "../App";
 import allverzeLogo from "../imports/Allverze_white7.png";
 
-interface HeaderProps {
-  current: Page;
-  navigate: (page: Page) => void;
-}
-
-const navLinks: { label: string; page: Page }[] = [
-  { label: "Home",     page: "home"     },
-  { label: "About Us", page: "about"    },
-  { label: "Services", page: "services" },
-  { label: "Contact",  page: "contact"  },
+const navLinks = [
+  { label: "Home",     path: "/" },
+  { label: "About",    path: "/about" },
+  { label: "Services", path: "/services" },
+  { label: "Contact",  path: "/contact" },
 ];
 
-export default function Header({ current, navigate }: HeaderProps) {
+export default function Header() {
   const { isDark, toggle } = useTheme();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -54,7 +50,7 @@ export default function Header({ current, navigate }: HeaderProps) {
       >
         {/* Logo */}
         <button
-          onClick={() => navigate("home")}
+          onClick={() => navigate("/")}
           className="flex items-center focus-visible:outline-none"
           aria-label="Allverze Corporation — home"
         >
@@ -72,31 +68,37 @@ export default function Header({ current, navigate }: HeaderProps) {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-1">
-          {navLinks.map(({ label, page }) => (
-            <button
-              key={page}
-              onClick={() => navigate(page)}
-              className="relative px-4 py-2 text-sm font-semibold transition-colors duration-150 focus-visible:outline-none"
-              style={{
-                color: current === page ? "#0055E5" : navColor,
+          {navLinks.map(({ label, path }) => (
+            <NavLink
+              key={path}
+              to={path}
+              className={({ isActive }) =>
+                `relative px-4 py-2 text-sm font-semibold transition-colors duration-150 focus-visible:outline-none ${isActive ? "text-blue-600" : ""}`
+              }
+              style={({ isActive }) => ({
+                color: isActive ? "#0055E5" : navColor,
                 borderRadius: 6,
-              }}
+              })}
             >
-              {label}
-              {current === page && (
-                <span
-                  className="absolute bottom-0.5 left-4 right-4 h-0.5"
-                  style={{ background: "#0055E5", borderRadius: 2 }}
-                />
+              {({ isActive }) => (
+                <>
+                  {label}
+                  {isActive && (
+                    <span
+                      className="absolute bottom-0.5 left-4 right-4 h-0.5"
+                      style={{ background: "#0055E5", borderRadius: 2 }}
+                    />
+                  )}
+                </>
               )}
-            </button>
+            </NavLink>
           ))}
         </nav>
 
         {/* Right controls */}
         <div className="hidden md:flex items-center gap-3">
           <button
-            onClick={() => navigate("contact")}
+            onClick={() => navigate("/contact")}
             className="inline-flex items-center gap-2 text-sm font-semibold text-white transition-all duration-150 hover:opacity-90 active:scale-[0.98]"
             style={{
               background: "#0055E5",
@@ -105,7 +107,7 @@ export default function Header({ current, navigate }: HeaderProps) {
               boxShadow: "0 2px 12px rgba(0,85,229,0.32)",
             }}
           >
-            Connect With Us
+            Book a Consultation
           </button>
 
           {/* Theme toggle */}
@@ -188,28 +190,32 @@ export default function Header({ current, navigate }: HeaderProps) {
             background: mobileMenuBg,
           }}
         >
-          {navLinks.map(({ label, page }) => (
-            <button
-              key={page}
-              onClick={() => { navigate(page); setMenuOpen(false); }}
-              className="text-sm font-semibold text-left px-3 py-2.5 transition-colors"
-              style={{
-                color: current === page ? "#0055E5" : navColor,
+          {navLinks.map(({ label, path }) => (
+            <NavLink
+              key={path}
+              to={path}
+              onClick={() => setMenuOpen(false)}
+              className={({ isActive }) =>
+                `text-sm font-semibold text-left px-3 py-2.5 transition-colors ${isActive ? "" : ""}`
+              }
+              style={({ isActive }) => ({
+                color: isActive ? "#0055E5" : navColor,
                 borderRadius: 6,
-                background: current === page
+                background: isActive
                   ? (isDark ? "rgba(0,85,229,0.12)" : "rgba(0,85,229,0.06)")
                   : "transparent",
-              }}
+                textDecoration: "none",
+              })}
             >
               {label}
-            </button>
+            </NavLink>
           ))}
           <button
-            onClick={() => { navigate("contact"); setMenuOpen(false); }}
+            onClick={() => { navigate("/contact"); setMenuOpen(false); }}
             className="mt-3 self-start text-sm font-semibold text-white"
             style={{ background: "#0055E5", borderRadius: 8, padding: "9px 22px" }}
           >
-            Connect With Us
+            Book a Consultation
           </button>
         </div>
       )}

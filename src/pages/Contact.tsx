@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "../ThemeContext";
-import type { Page } from "../App";
+import { API_BASE_URL, WHATSAPP_URL } from "../config";
 
 const faqs = [
   {
@@ -21,13 +21,16 @@ const faqs = [
   },
 ];
 
-const intents = ["Build New Solution", "Mobile App Development", "Performance Testing", "Advisory Audit", "Others"];
+const intents = [
+  "Custom Software Engineering",
+  "Mobile Application Development",
+  "Application Performance Monitoring",
+  "Performance & Automation Testing",
+  "Discovery & Advisory",
+  "Other",
+];
 
-interface ContactProps {
-  navigate: (page: Page) => void;
-}
-
-export default function Contact({ navigate: _navigate }: ContactProps) {
+export default function Contact() {
   const { isDark } = useTheme();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [intent, setIntent] = useState(intents[0]);
@@ -73,14 +76,14 @@ export default function Contact({ navigate: _navigate }: ContactProps) {
               color: "#F8FAFC",
               letterSpacing: "-0.025em",
               lineHeight: 1.1,
-              maxWidth: 640,
+              maxWidth: 700,
             }}
           >
-            {"Let's Solve Your "}
-            <span style={{ color: "#38BDF8" }}>Next Challenge.</span>
+            {"Build What Moves Your "}
+            <span style={{ color: "#38BDF8" }}>Business Forward.</span>
           </h1>
-          <p style={{ marginTop: 18, fontSize: "1.0625rem", color: "rgba(248,250,252,0.55)", lineHeight: 1.75, maxWidth: 480 }}>
-            No sales scripts, no pressure — just a direct line to engineers and strategists who listen first.
+          <p style={{ marginTop: 18, fontSize: "1.0625rem", color: "rgba(248,250,252,0.55)", lineHeight: 1.75, maxWidth: 520 }}>
+            Tell us what you need, where the friction is, and what success looks like. We'll help map the right technical path with the clarity and discipline your team expects.
           </p>
         </div>
       </section>
@@ -95,7 +98,7 @@ export default function Contact({ navigate: _navigate }: ContactProps) {
                 Direct Channels
               </h2>
               <p style={{ marginTop: 4, fontSize: "0.875rem", color: textMuted }}>
-                Reach us through the channel that works best for you.
+                Choose the contact method that fits your current decision stage.
               </p>
             </div>
 
@@ -154,7 +157,7 @@ export default function Contact({ navigate: _navigate }: ContactProps) {
                 </div>
               </div>
               <button
-                onClick={() => window.open("https://wa.me/6281283812336?text=Hello%20Allverze%20team%2C%20I%20would%20like%20to%20inquire%20about%20your%20services%20and%20learn%20more%20about%20how%20your%20solutions%20can%20support%20my%20business.", "_blank", "noopener")}
+                onClick={() => window.open(WHATSAPP_URL, "_blank", "noopener")}
                 className="w-full text-sm font-semibold text-white transition-opacity hover:opacity-90"
                 style={{ background: "#25D366", borderRadius: 9, padding: "11px" }}
               >
@@ -221,9 +224,9 @@ export default function Contact({ navigate: _navigate }: ContactProps) {
                   </svg>
                 </div>
                 <div>
-                  <h3 style={{ fontSize: "1.3rem", fontWeight: 700, color: textPrimary }}>Message Received</h3>
-                  <p style={{ marginTop: 6, fontSize: "0.875rem", color: textSub, maxWidth: 300 }}>
-                    A Solutions Engineer will be in touch within one business day.
+                  <h3 style={{ fontSize: "1.3rem", fontWeight: 700, color: textPrimary }}>Inquiry Received</h3>
+                  <p style={{ marginTop: 6, fontSize: "0.875rem", color: textSub, maxWidth: 320 }}>
+                    A solutions specialist will review your inquiry and respond within one business day.
                   </p>
                   {leadRef && (
                     <div
@@ -291,7 +294,7 @@ export default function Contact({ navigate: _navigate }: ContactProps) {
                     message: `[Intent: ${intent}]\n\n${form.message}`,
                     botcheck: "",
                   });
-                  const res = await fetch("/api/contact", {
+                  const res = await fetch(`${API_BASE_URL}/api/contact`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body,
@@ -312,17 +315,17 @@ export default function Contact({ navigate: _navigate }: ContactProps) {
               }} className="flex flex-col gap-6">
                 <div>
                   <h2 style={{ fontSize: "1.3rem", fontWeight: 700, color: textPrimary, letterSpacing: "-0.01em" }}>
-                    Start the Conversation
+                    Request a Strategy Call
                   </h2>
                   <p style={{ marginTop: 4, fontSize: "0.875rem", color: textSub }}>
-                    Tell us what you need — we handle the rest.
+                    Share your business context, technical goals, and timeline. We'll define the right next step.
                   </p>
                 </div>
 
                 {/* Intent */}
                 <div className="flex flex-col gap-2">
                   <label style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>
-                    What brings you here?
+                    Primary service need
                   </label>
                   <div className="flex flex-wrap gap-2">
                     {intents.map((opt) => (
@@ -383,7 +386,7 @@ export default function Contact({ navigate: _navigate }: ContactProps) {
                   <label style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>Message</label>
                   <textarea
                     required rows={4}
-                    placeholder="Describe what you're looking to solve..."
+                    placeholder="Tell us about your challenge, goals, timeline, and the outcome you want..."
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
                     style={{ ...inputBase, resize: "none" }}
@@ -404,10 +407,10 @@ export default function Contact({ navigate: _navigate }: ContactProps) {
                     className="w-full text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
                     style={{ background: "#0055E5", borderRadius: 9, padding: "13px", boxShadow: "0 2px 12px rgba(0,85,229,0.28)" }}
                   >
-                    {sending ? "Sending..." : "Send Message →"}
+                    {sending ? "Sending..." : "Send Inquiry →"}
                   </button>
                   <p style={{ fontSize: "0.75rem", textAlign: "center", color: textMuted }}>
-                    🔒 100% Confidential & Secure · NDA Available Upon Request
+                    Confidential by default · NDA available before discovery
                   </p>
                 </div>
               </form>

@@ -1,16 +1,52 @@
 import 'dotenv/config';
 import express from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 import nodemailer from 'nodemailer';
 import { randomBytes } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const app = express();
-const port = Number(process.env.PORT || 3001);
 
-const ALLVERZE_EMAIL = process.env.SMTP_USER;
-const WHATSAPP_NUMBER = '6281283812336';
-const CONTACT_EMAIL = process.env.CONTACT_EMAIL || process.env.SMTP_USER;
+const config = {
+  port: Number(process.env.PORT || 3001),
+  smtpHost: process.env.SMTP_HOST,
+  smtpPort: Number(process.env.SMTP_PORT || 587),
+  smtpUser: process.env.SMTP_USER,
+  smtpPass: process.env.SMTP_PASS,
+  contactEmail: process.env.CONTACT_EMAIL || process.env.SMTP_USER,
+  publicEmail: process.env.PUBLIC_EMAIL || process.env.SMTP_USER,
+  whatsappNumber: process.env.WHATSAPP_NUMBER || '6281283812336',
+  frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5173',
+};
+
+const REQUIRED_ENV = ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASS'];
+const missingEnv = REQUIRED_ENV.filter((key) => !process.env[key]?.trim());
+if (missingEnv.length > 0) {
+  console.error(`[config] Missing required environment variables: ${missingEnv.join(', ')}`);
+  process.exit(1);
+}
+
 const EMAIL_LOGO_PATH = fileURLToPath(new URL('./src/imports/email-logo.png', import.meta.url));
+
+function formatWhatsAppDisplay(value) {
+  const digits = String(value).replace(/\D/g, '');
+  if (digits.length < 4) return String(value);
+  return `+${digits.slice(0, 2)} ${digits.slice(2, 5)} ${digits.slice(5, 9)} ${digits.slice(9)}`;
+}
+
+app.use(helmet());
+app.use(cors({ origin: config.frontendUrl, credentials: true }));
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many requests. Please try again later.' },
+});
+app.use('/api/contact', limiter);
 
 const INTENT_CODES = {
   'Build New Solution': 'BNS',
@@ -95,10 +131,8 @@ app.post('/api/contact', async (req, res) => {
     });
   }
 
-  const smtpPort = Number(process.env.SMTP_PORT || 587);
-
-  if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS || !CONTACT_EMAIL) {
-    console.error('Missing SMTP configuration. Check the environment variables.');
+  if (!config.smtpHost || !config.smtpUser || !config.smtpPass || !config.contactEmail) {
+    console.error('[config] SMTP configuration incomplete. Check the environment variables.');
     return res.status(500).json({
       success: false,
       message: 'Email service is not configured. Please try again later.',
@@ -106,12 +140,12 @@ app.post('/api/contact', async (req, res) => {
   }
 
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: smtpPort,
-    secure: smtpPort === 465,
+    host: config.smtpHost,
+    port: config.smtpPort,
+    secure: config.smtpPort === 465,
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      user: config.smtpUser,
+      pass: config.smtpPass,
     },
   });
 
@@ -132,9 +166,9 @@ app.post('/api/contact', async (req, res) => {
     )}`;
 
     await sendWithRetry(transporter, {
-      from: `Allverze Website <${process.env.SMTP_USER}>`,
-      to: CONTACT_EMAIL,
-      envelope: { from: process.env.SMTP_USER, to: [CONTACT_EMAIL] },
+      from: `Allverze Website <${config.smtpUser}>`,
+      to: config.contactEmail,
+      envelope: { from: config.smtpUser, to: [config.contactEmail] },
       replyTo: email.trim(),
       subject: `New contact message from ${name.trim()}`,
       attachments: [
@@ -275,16 +309,16 @@ RESPONSE SLA: Reply to this customer within 1 business day.`,
 </body>
 </html>`,
     });
-    console.log(`[inbound-email] Sent inquiry ${leadRef} to ${CONTACT_EMAIL}`);
+    console.log(`[inbound-email] Sent inquiry ${leadRef} to ${config.contactEmail}`);
 
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
     let confirmSent = false;
     try {
       await sendWithRetry(transporter, {
-        from: `Allverze <${process.env.SMTP_USER}>`,
+        from: `Allverze <${config.smtpUser}>`,
         to: email.trim(),
-        envelope: { from: process.env.SMTP_USER, to: [email.trim()] },
+        envelope: { from: config.smtpUser, to: [email.trim()] },
         subject: `We've received your message — Allverze`,
         attachments: [
           { filename: 'allverze-logo.png', path: EMAIL_LOGO_PATH, cid: 'alv-logo' },
@@ -298,8 +332,8 @@ Intent: ${intentLabel}
 Phone: ${phone.trim()}
 
 Need a faster response? Reach us directly:
-- Email: allverze.corporation@gmail.com
-- WhatsApp: +62 812 8381 2336
+- Email: ${config.publicEmail}
+- WhatsApp: ${formatWhatsAppDisplay(config.whatsappNumber)}
 
 Best regards,
 The Allverze Team`,
@@ -370,7 +404,7 @@ The Allverze Team`,
                 <tr>
                   <td style="width:88px;font-size:0.875rem;font-weight:700;color:#0B1D35;">Email:</td>
                   <td style="font-size:0.875rem;">
-                    <a href="mailto:${ALLVERZE_EMAIL}" style="color:#0055E5;text-decoration:none;font-weight:600;">${ALLVERZE_EMAIL}</a>
+                    <a href="mailto:${config.publicEmail}" style="color:#0055E5;text-decoration:none;font-weight:600;">${config.publicEmail}</a>
                   </td>
                 </tr>
               </table>
@@ -378,7 +412,7 @@ The Allverze Team`,
                 <tr>
                   <td style="width:88px;font-size:0.875rem;font-weight:700;color:#0B1D35;">WhatsApp:</td>
                   <td style="font-size:0.875rem;">
-                    <a href="https://wa.me/${WHATSAPP_NUMBER}" style="color:#0055E5;text-decoration:none;font-weight:600;">+62 812 8381 2336</a>
+                    <a href="https://wa.me/${config.whatsappNumber}" style="color:#0055E5;text-decoration:none;font-weight:600;">${formatWhatsAppDisplay(config.whatsappNumber)}</a>
                   </td>
                 </tr>
               </table>
@@ -419,6 +453,6 @@ The Allverze Team`,
   }
 });
 
-app.listen(port, () => {
-  console.log(`Contact email server listening on http://localhost:${port}`);
+app.listen(config.port, () => {
+  console.log(`Contact email server listening on http://localhost:${config.port}`);
 });

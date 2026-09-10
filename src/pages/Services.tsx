@@ -1,5 +1,6 @@
+import { useNavigate } from "react-router-dom";
 import { useTheme } from "../ThemeContext";
-import type { Page } from "../App";
+import { WHATSAPP_URL } from "../config";
 
 const modules = [
   {
@@ -63,11 +64,8 @@ const steps = [
   { num: "04", label: "Continuous Optimization",  desc: "Post-launch, we monitor, iterate, and improve — because Better Every Day doesn't stop at go-live." },
 ];
 
-interface ServicesProps {
-  navigate: (page: Page) => void;
-}
-
-export default function Services({ navigate }: ServicesProps) {
+export default function Services() {
+  const navigate = useNavigate();
   const { isDark } = useTheme();
 
   const pageBg     = isDark ? "#060E1A" : "#F8FAFC";
@@ -95,11 +93,11 @@ export default function Services({ navigate }: ServicesProps) {
               maxWidth: 660,
             }}
           >
-            Practical Solutions.{" "}
-            <span style={{ color: "#38BDF8" }}>Uncompromising Performance.</span>
+            Capability built for{" "}
+            <span style={{ color: "#38BDF8" }}>real business momentum.</span>
           </h1>
           <p style={{ marginTop: 20, fontSize: "1.0625rem", color: "rgba(248,250,252,0.58)", lineHeight: 1.75, maxWidth: 520 }}>
-            Four deep-expertise capability domains. One integrated partner. Delivered with the integrity and precision Allverze is built on.
+            Four focused capability domains. One trusted delivery partner. Built to turn operational pressure into measurable progress.
           </p>
         </div>
       </section>
@@ -200,7 +198,7 @@ export default function Services({ navigate }: ServicesProps) {
                   </ul>
 
                   <button
-                    onClick={() => navigate("contact")}
+                    onClick={() => navigate("/contact")}
                     className="self-start text-sm font-semibold text-white transition-all duration-150 hover:opacity-90 active:scale-[0.98]"
                     style={{ background: "#0055E5", borderRadius: 9, padding: "10px 22px", marginTop: 4, boxShadow: "0 2px 10px rgba(0,85,229,0.22)" }}
                   >
@@ -229,18 +227,18 @@ export default function Services({ navigate }: ServicesProps) {
               How We Work
             </p>
             <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.5rem)", fontWeight: 700, color: textPrimary, letterSpacing: "-0.02em" }}>
-              The A to Z Workflow
+              A disciplined path from insight to execution
             </h2>
             <p style={{ marginTop: 10, fontSize: "0.9375rem", color: textSub, lineHeight: 1.7 }}>
-              Four phases, zero guesswork. Every engagement follows the same disciplined process.
+              Four clear phases. No guesswork, no inflated complexity, and no drift from the outcomes that matter.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 gap-5 overflow-visible sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             {steps.map((step, i) => (
               <div
                 key={step.num}
-                className="flex flex-col gap-4"
+                className="group relative flex flex-col gap-4 overflow-visible"
                 style={{
                   background: cardBg,
                   border: `1px solid ${cardBorder}`,
@@ -251,9 +249,20 @@ export default function Services({ navigate }: ServicesProps) {
                 }}
               >
                 {i < steps.length - 1 && (
-                  <div className="hidden lg:block absolute" style={{ top: 36, right: -26, width: 20, zIndex: 2 }}>
-                    <svg width="20" height="12" viewBox="0 0 20 12" fill="none">
-                      <path d="M0 6h16M12 1l5 5-5 5" stroke={isDark ? "rgba(255,255,255,0.18)" : "#CBD5E1"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <div className="pointer-events-none absolute left-full top-1/2 z-10 hidden h-8 w-8 -translate-y-1/2 items-center justify-center lg:flex">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke={isDark ? "rgba(255,255,255,0.20)" : "#CBD5E1"}
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M9 18l6-6-6-6"
+                      />
                     </svg>
                   </div>
                 )}
@@ -280,18 +289,18 @@ export default function Services({ navigate }: ServicesProps) {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10">
           <div className="max-w-xl">
             <h2 style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", fontWeight: 700, color: "#F8FAFC", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
-              Ready to Solve Your Next Challenge?
+              Ready to move your next initiative forward?
             </h2>
             <p style={{ marginTop: 10, fontSize: "0.9375rem", color: "rgba(248,250,252,0.50)", lineHeight: 1.7 }}>
-              A direct conversation with engineers who understand your problem — no pitch decks, no generic proposals.
+              A direct conversation with specialists who understand the business context behind the technical challenge — no generic pitch, no wasted time.
             </p>
             <p style={{ marginTop: 8, fontSize: "0.78rem", color: "rgba(248,250,252,0.30)" }}>
-              100% Confidential. NDA Available Upon Request.
+              Confidential by default. NDA available before discovery.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
             <button
-              onClick={() => navigate("contact")}
+              onClick={() => navigate("/contact")}
               className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-white transition-all duration-150 hover:opacity-90"
               style={{ background: "#0055E5", borderRadius: 9, padding: "12px 24px", boxShadow: "0 2px 12px rgba(0,85,229,0.30)", whiteSpace: "nowrap" }}
             >
@@ -302,7 +311,7 @@ export default function Services({ navigate }: ServicesProps) {
               Email Inquiry
             </button>
             <button
-              onClick={() => window.open("https://wa.me/6281283812336?text=Hello%20Allverze%20team%2C%20I%20would%20like%20to%20inquire%20about%20your%20services%20and%20learn%20more%20about%20how%20your%20solutions%20can%20support%20my%20business.", "_blank", "noopener")}
+              onClick={() => window.open(WHATSAPP_URL, "_blank", "noopener")}
               className="inline-flex items-center justify-center gap-2 text-sm font-semibold transition-all duration-150"
               style={{ border: "1px solid rgba(248,250,252,0.20)", borderRadius: 9, padding: "12px 24px", color: "rgba(248,250,252,0.80)", whiteSpace: "nowrap" }}
             >

@@ -1,5 +1,5 @@
+import { useNavigate } from "react-router-dom";
 import { useTheme } from "../ThemeContext";
-import type { Page } from "../App";
 import OrbitalRing from "../components/OrbitalRing";
 
 const capabilities = [
@@ -56,11 +56,8 @@ const trustItems = [
   "24 / 7 Engineering Support",
 ];
 
-interface HomeProps {
-  navigate: (page: Page) => void;
-}
-
-export default function Home({ navigate }: HomeProps) {
+export default function Home() {
+  const navigate = useNavigate();
   const { isDark } = useTheme();
 
   const pageBg   = isDark ? "#060E1A" : "#F8FAFC";
@@ -111,19 +108,17 @@ export default function Home({ navigate }: HomeProps) {
                 color: "#F8FAFC",
               }}
             >
-              Connecting Technology,{" "}
-              <span style={{ color: "#38BDF8" }}>Ideas, and Innovation</span>{" "}
-              from A to Z.
+              Technology that moves your{" "}
+              <span style={{ color: "#38BDF8" }}>business forward.</span>
             </h1>
 
             <p style={{ fontSize: "1.0625rem", lineHeight: 1.75, color: "rgba(248,250,252,0.62)", maxWidth: 520 }}>
-              Allverze represents a universe of solutions. We bring diverse expertise, modern technologies,
-              and practical ideas together to solve real-world business challenges.
+              We help ambitious teams turn complexity into momentum through tailored engineering, product strategy, and operational clarity.
             </p>
 
             <div className="flex flex-wrap items-center gap-3 mt-2">
               <button
-                onClick={() => navigate("services")}
+                onClick={() => navigate("/services")}
                 className="inline-flex items-center gap-2 text-sm font-semibold text-white transition-all duration-150 hover:opacity-90 active:scale-[0.98]"
                 style={{
                   background: "#0055E5",
@@ -138,7 +133,7 @@ export default function Home({ navigate }: HomeProps) {
                 </svg>
               </button>
               <button
-                onClick={() => navigate("about")}
+                onClick={() => navigate("/about")}
                 className="inline-flex items-center gap-2 text-sm font-semibold transition-all duration-150"
                 style={{
                   color: "rgba(248,250,252,0.80)",
@@ -154,7 +149,7 @@ export default function Home({ navigate }: HomeProps) {
             <div className="flex items-center gap-3 pt-1">
               <div className="h-px flex-1" style={{ background: "rgba(248,250,252,0.08)", maxWidth: 40 }} />
               <span style={{ fontSize: "0.78rem", color: "rgba(248,250,252,0.38)", fontStyle: "italic" }}>
-                &quot;We Solve, Not Just Sell&quot; &nbsp;&middot;&nbsp; 100% Confidential. NDA available.
+                We Solve, Not Just Sell &nbsp;&middot;&nbsp; Better Every Day
               </span>
             </div>
           </div>
@@ -196,10 +191,10 @@ export default function Home({ navigate }: HomeProps) {
               What We Do
             </p>
             <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.6rem)", fontWeight: 700, color: textPrimary, letterSpacing: "-0.02em", lineHeight: 1.18 }}>
-              Core Capabilities
+              Built for Business Momentum
             </h2>
             <p style={{ marginTop: 12, fontSize: "0.9375rem", color: textSub, lineHeight: 1.7 }}>
-              End-to-end technology solutions built on precision engineering, not promises.
+              Purpose-built technology systems and delivery models designed to reduce friction, accelerate execution, and support sustainable growth.
             </p>
           </div>
 
@@ -261,7 +256,7 @@ export default function Home({ navigate }: HomeProps) {
                 </div>
 
                 <button
-                  onClick={() => navigate("services")}
+                  onClick={() => navigate("/services")}
                   className="self-start flex items-center gap-1.5 text-sm font-semibold group-hover:gap-2.5 transition-all duration-200"
                   style={{ color: "#0055E5" }}
                 >
@@ -299,7 +294,7 @@ export default function Home({ navigate }: HomeProps) {
               relationship. We measure success by the compounding value we create for clients over time.
             </p>
             <button
-              onClick={() => navigate("contact")}
+              onClick={() => navigate("/contact")}
               className="self-start text-sm font-semibold text-white transition-all duration-150 hover:opacity-90"
               style={{ background: "#0055E5", borderRadius: 9, padding: "11px 24px", boxShadow: "0 2px 12px rgba(0,85,229,0.28)" }}
             >

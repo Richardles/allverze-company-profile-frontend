@@ -1,5 +1,5 @@
+import { useNavigate } from "react-router-dom";
 import { useTheme } from "../ThemeContext";
-import type { Page } from "../App";
 import OrbitalRing from "../components/OrbitalRing";
 
 const coreValues = [
@@ -89,11 +89,8 @@ const team = [
 
 const pillars = ["Best Service", "Best Quality", "Integrity", "Reliability", "Professionalism"];
 
-interface AboutProps {
-  navigate: (page: Page) => void;
-}
-
-export default function About({ navigate }: AboutProps) {
+export default function About() {
+  const navigate = useNavigate();
   const { isDark } = useTheme();
 
   const pageBg      = isDark ? "#060E1A" : "#F8FAFC";
@@ -121,16 +118,14 @@ export default function About({ navigate }: AboutProps) {
               color: "#F8FAFC",
               letterSpacing: "-0.025em",
               lineHeight: 1.1,
-              maxWidth: 680,
+              maxWidth: 700,
             }}
           >
-            A Universe of Unlimited{" "}
+            Connecting{" "}
             <span style={{ color: "#38BDF8" }}>Possibilities</span>
           </h1>
           <p style={{ marginTop: 20, fontSize: "1.0625rem", color: "rgba(248,250,252,0.58)", lineHeight: 1.75, maxWidth: 560 }}>
-            <strong style={{ color: "rgba(248,250,252,0.82)", fontWeight: 600 }}>All</strong> — the breadth of every solution imaginable.{" "}
-            <strong style={{ color: "rgba(248,250,252,0.82)", fontWeight: 600 }}>Verze</strong> — a universe of possibilities, boundless and ever-expanding.
-            Together: your partner from A to Z.
+            We connect business ambition with practical technology, turning complex challenges into clear progress. The result is a partnership that is built on trust, technical clarity, and measurable momentum.
           </p>
         </div>
       </section>
@@ -401,7 +396,7 @@ export default function About({ navigate }: AboutProps) {
             Ready to work with a team that solves, not just sells?
           </h2>
           <button
-            onClick={() => navigate("contact")}
+            onClick={() => navigate("/contact")}
             className="flex-shrink-0 text-sm font-semibold text-white transition-all duration-150 hover:opacity-90 active:scale-[0.98]"
             style={{ background: "#0055E5", borderRadius: 9, padding: "12px 28px", boxShadow: "0 2px 12px rgba(0,85,229,0.28)", whiteSpace: "nowrap" }}
           >

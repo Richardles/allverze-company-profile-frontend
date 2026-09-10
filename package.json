@@ -9,16 +9,21 @@
     "dev:server": "node server.mjs",
     "server": "node server.mjs",
     "build": "tsc -b && vite build",
+    "start": "node server.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
     "concurrently": "^10.0.5",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
     "nodemailer": "^10.0.1",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
