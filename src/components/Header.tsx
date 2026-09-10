@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useTheme } from "../ThemeContext";
-import allverzeLogo from "../imports/Allverze_white7.png";
+import allverzeLogo from "../imports/logo.webp";
 
 const navLinks = [
   { label: "Home",     path: "/" },
