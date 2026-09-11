@@ -1,0 +1,17 @@
+{
+  "builds": [
+    {
+      "src": "vercel.mjs",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["assets/**"]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/vercel.mjs"
+    }
+  ]
+}

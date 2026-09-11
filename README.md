@@ -21,7 +21,9 @@ npm-workspaces monorepo with two packages:
 │       ├── App.tsx     routes (/ /about /services /contact, * → home)
 │       └── config.ts   env-driven client config
 └── server/             Express 5 email API
-    ├── server.mjs      entry (dotenv/config, config, app, listen)
+    ├── server.mjs      entry (dotenv/config, config, app, listen) — local + Docker
+    ├── vercel.mjs      Vercel serverless entry (exports the Express app)
+    ├── vercel.json     Vercel build config (@vercel/node + catch-all routes)
     ├── assets/         email-logo.png (base64 inline)
     └── src/
         ├── app.js      middleware + routing + error handling
@@ -47,7 +49,8 @@ npm-workspaces monorepo with two packages:
 
 ## Deployment
 
-- **Backend — Railway**: `railway.json` targets `server/` as the root directory; builds its `Dockerfile` (node:22-alpine); healthcheck `GET /api/health`.
-- **Frontend — Cloudflare Pages**: Root directory `client`, build `npm run build`, output `dist/`. Requires `NODE_VERSION=22`. Custom domain `allverze.com` via Cloudflare DNS.
+- **Backend — Vercel (free Hobby)**: Root directory `server`; `vercel.json` builds `vercel.mjs` with `@vercel/node` (catch-all routes, `assets/**` included for the email logo). Node runtime pinned to `22.x` via `engines`. Healthcheck `GET /api/health`.
+- **Frontend — Cloudflare Pages**: Root directory `client`, build `npm run build`, output `dist/`. Requires `NODE_VERSION=22`. Custom domains `www.allverze.com` (canonical primary) + `allverze.com` (redirects to www) via Cloudflare DNS.
+- **API hostname**: `api.allverze.com` (invisible to visitors) ← `CNAME api → cname.vercel-dns.com`. Frontend reaches it via `VITE_API_URL`.
 
 See `AGENTS.md` for the full runbook and session memory.
