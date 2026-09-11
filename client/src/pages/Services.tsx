@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useTheme } from "../ThemeContext";
+import { useTheme } from "../theme/ThemeContext";
+import { useThemeColors } from "../theme/useThemeColors";
 import { WHATSAPP_URL } from "../config";
 
 const modules = [
@@ -67,13 +68,9 @@ const steps = [
 export default function Services() {
   const navigate = useNavigate();
   const { isDark } = useTheme();
+  const colors = useThemeColors();
 
-  const pageBg     = isDark ? "#060E1A" : "#F8FAFC";
-  const cardBg     = isDark ? "#0B1D35" : "#FFFFFF";
-  const cardBorder = isDark ? "rgba(255,255,255,0.07)" : "#E2E8F0";
-  const textPrimary = isDark ? "#F8FAFC" : "#0B1D35";
-  const textSub    = isDark ? "rgba(248,250,252,0.60)" : "#4A6080";
-  const stepNumBg  = isDark ? "rgba(0,85,229,0.14)" : "rgba(0,85,229,0.08)";
+  const stepNumBg = isDark ? "rgba(0,85,229,0.14)" : "rgba(0,85,229,0.08)";
 
   return (
     <main style={{ paddingTop: 72 }}>
@@ -106,12 +103,12 @@ export default function Services() {
       {modules.map((mod, i) => {
         const sectionBg = mod.dark
           ? "#0B1D35"
-          : pageBg;
-        const modText   = mod.dark ? "#F8FAFC" : textPrimary;
-        const modSub    = mod.dark ? "rgba(248,250,252,0.55)" : textSub;
+          : colors.pageBg;
+        const modText   = mod.dark ? "#F8FAFC" : colors.textPrimary;
+        const modSub    = mod.dark ? "rgba(248,250,252,0.55)" : colors.textSub;
         const modAccent = mod.dark ? "#38BDF8" : "#0055E5";
-        const modTagSub = mod.dark ? "rgba(248,250,252,0.38)" : "#8AA0BD";
-        const panelBg   = mod.dark ? "#0E2344" : (isDark ? "#0B1D35" : "#EFF4FF");
+        const modTagSub = mod.dark ? "rgba(248,250,252,0.38)" : colors.textMuted;
+        const panelBg   = mod.dark ? "#0E2344" : (isDark ? colors.cardBg : "#EFF4FF");
         const panelBorder = mod.dark
           ? "1px solid rgba(56,189,248,0.14)"
           : `1px solid ${isDark ? "rgba(0,85,229,0.18)" : "rgba(0,85,229,0.12)"}`;
@@ -214,7 +211,7 @@ export default function Services() {
       {/* ── A TO Z WORKFLOW ───────────────────────────────────── */}
       <section
         style={{
-          background: pageBg,
+          background: colors.pageBg,
           paddingTop: 96,
           paddingBottom: 96,
           borderTop: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "#E9EEF5"}`,
@@ -226,10 +223,10 @@ export default function Services() {
             <p className="font-bold tracking-[0.14em] uppercase mb-3" style={{ fontSize: "0.6875rem", color: "#0055E5" }}>
               How We Work
             </p>
-            <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.5rem)", fontWeight: 700, color: textPrimary, letterSpacing: "-0.02em" }}>
+            <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.5rem)", fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.02em" }}>
               A disciplined path from insight to execution
             </h2>
-            <p style={{ marginTop: 10, fontSize: "0.9375rem", color: textSub, lineHeight: 1.7 }}>
+            <p style={{ marginTop: 10, fontSize: "0.9375rem", color: colors.textSub, lineHeight: 1.7 }}>
               Four clear phases. No guesswork, no inflated complexity, and no drift from the outcomes that matter.
             </p>
           </div>
@@ -240,8 +237,8 @@ export default function Services() {
                 key={step.num}
                 className="group relative flex flex-col gap-4 overflow-visible"
                 style={{
-                  background: cardBg,
-                  border: `1px solid ${cardBorder}`,
+                  background: colors.cardBg,
+                  border: `1px solid ${colors.cardBorder}`,
                   borderRadius: 14,
                   padding: "28px 24px",
                   boxShadow: isDark ? "0 1px 4px rgba(0,0,0,0.25)" : "0 1px 4px rgba(0,0,0,0.04)",
@@ -269,10 +266,10 @@ export default function Services() {
                 <div style={{ fontSize: "0.75rem", fontWeight: 800, letterSpacing: "0.06em", color: "#0055E5", background: stepNumBg, borderRadius: 6, padding: "4px 10px", alignSelf: "flex-start" }}>
                   {step.num}
                 </div>
-                <h3 style={{ fontSize: "1rem", fontWeight: 700, color: textPrimary, letterSpacing: "-0.01em" }}>
+                <h3 style={{ fontSize: "1rem", fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.01em" }}>
                   {step.label}
                 </h3>
-                <p style={{ fontSize: "0.855rem", color: textSub, lineHeight: 1.7 }}>
+                <p style={{ fontSize: "0.855rem", color: colors.textSub, lineHeight: 1.7 }}>
                   {step.desc}
                 </p>
               </div>

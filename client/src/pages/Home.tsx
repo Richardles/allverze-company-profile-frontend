@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useTheme } from "../ThemeContext";
+import { useTheme } from "../theme/ThemeContext";
+import { useThemeColors } from "../theme/useThemeColors";
 import OrbitalRing from "../components/OrbitalRing";
 
 const capabilities = [
@@ -59,13 +60,9 @@ const trustItems = [
 export default function Home() {
   const navigate = useNavigate();
   const { isDark } = useTheme();
+  const colors = useThemeColors();
 
-  const pageBg   = isDark ? "#060E1A" : "#F8FAFC";
-  const cardBg   = isDark ? "#0B1D35" : "#FFFFFF";
-  const cardBorder = isDark ? "rgba(255,255,255,0.07)" : "#E2E8F0";
-  const textPrimary = isDark ? "#F8FAFC" : "#0B1D35";
-  const textSub  = isDark ? "rgba(248,250,252,0.60)" : "#4A6080";
-  const tagBg    = isDark ? "rgba(0,85,229,0.15)" : "#EFF4FF";
+  const tagBg = isDark ? "rgba(0,85,229,0.15)" : "#EFF4FF";
   const tagColor = isDark ? "#7AABFF" : "#6B8CAE";
 
   return (
@@ -184,16 +181,16 @@ export default function Home() {
       </div>
 
       {/* ── CORE CAPABILITIES ─────────────────────────────────── */}
-      <section style={{ background: pageBg, paddingTop: 96, paddingBottom: 96 }} className="px-6 lg:px-12">
+      <section style={{ background: colors.pageBg, paddingTop: 96, paddingBottom: 96 }} className="px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="mb-14 max-w-xl">
             <p className="font-bold tracking-[0.14em] uppercase mb-3" style={{ fontSize: "0.6875rem", color: "#0055E5" }}>
               What We Do
             </p>
-            <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.6rem)", fontWeight: 700, color: textPrimary, letterSpacing: "-0.02em", lineHeight: 1.18 }}>
+            <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.6rem)", fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.02em", lineHeight: 1.18 }}>
               Built for Business Momentum
             </h2>
-            <p style={{ marginTop: 12, fontSize: "0.9375rem", color: textSub, lineHeight: 1.7 }}>
+            <p style={{ marginTop: 12, fontSize: "0.9375rem", color: colors.textSub, lineHeight: 1.7 }}>
               Purpose-built technology systems and delivery models designed to reduce friction, accelerate execution, and support sustainable growth.
             </p>
           </div>
@@ -204,8 +201,8 @@ export default function Home() {
                 key={cap.title}
                 className="group flex flex-col gap-5 transition-all duration-200 hover:-translate-y-0.5"
                 style={{
-                  background: cardBg,
-                  border: `1px solid ${cardBorder}`,
+                  background: colors.cardBg,
+                  border: `1px solid ${colors.cardBorder}`,
                   borderRadius: 14,
                   padding: "32px 32px",
                   boxShadow: isDark
@@ -247,10 +244,10 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <h3 style={{ fontSize: "1.075rem", fontWeight: 700, color: textPrimary, marginBottom: 8, letterSpacing: "-0.01em" }}>
+                  <h3 style={{ fontSize: "1.075rem", fontWeight: 700, color: colors.textPrimary, marginBottom: 8, letterSpacing: "-0.01em" }}>
                     {cap.title}
                   </h3>
-                  <p style={{ fontSize: "0.9rem", color: textSub, lineHeight: 1.7 }}>
+                  <p style={{ fontSize: "0.9rem", color: colors.textSub, lineHeight: 1.7 }}>
                     {cap.desc}
                   </p>
                 </div>

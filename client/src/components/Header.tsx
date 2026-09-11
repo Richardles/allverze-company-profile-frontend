@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useTheme } from "../ThemeContext";
+import { useTheme } from "../theme/ThemeContext";
 import allverzeLogo from "../imports/logo.webp";
 
 const navLinks = [

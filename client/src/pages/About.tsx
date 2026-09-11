@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useTheme } from "../ThemeContext";
+import { useTheme } from "../theme/ThemeContext";
+import { useThemeColors } from "../theme/useThemeColors";
 import OrbitalRing from "../components/OrbitalRing";
 
 const coreValues = [
@@ -92,16 +93,9 @@ const pillars = ["Best Service", "Best Quality", "Integrity", "Reliability", "Pr
 export default function About() {
   const navigate = useNavigate();
   const { isDark } = useTheme();
+  const colors = useThemeColors();
 
-  const pageBg      = isDark ? "#060E1A" : "#F8FAFC";
-  const cardBg      = isDark ? "#0B1D35" : "#FFFFFF";
-  const cardBorder  = isDark ? "rgba(255,255,255,0.07)" : "#E2E8F0";
-  const textPrimary = isDark ? "#F8FAFC" : "#0B1D35";
-  const textSub     = isDark ? "rgba(248,250,252,0.60)" : "#4A6080";
-  const textMuted   = isDark ? "rgba(248,250,252,0.38)" : "#8AA0BD";
-  const pillabBg    = isDark ? "#0B1D35" : "#FFFFFF";
-  const pillBorder  = isDark ? "rgba(255,255,255,0.07)" : "#E2E8F0";
-  const missionBg   = isDark ? "#0E2344" : "#FFFFFF";
+  const missionBg = isDark ? "#0E2344" : colors.cardBg;
 
   return (
     <main style={{ paddingTop: 72 }}>
@@ -131,7 +125,7 @@ export default function About() {
       </section>
 
       {/* ── ORBITAL RING STORY ────────────────────────────────── */}
-      <section style={{ background: pageBg, paddingTop: 96, paddingBottom: 96 }} className="px-6 lg:px-12">
+      <section style={{ background: colors.pageBg, paddingTop: 96, paddingBottom: 96 }} className="px-6 lg:px-12">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="flex justify-center">
             <div className="orbital-float">
@@ -144,7 +138,7 @@ export default function About() {
               <p className="font-bold tracking-[0.14em] uppercase mb-3" style={{ fontSize: "0.6875rem", color: "#0055E5" }}>
                 The Orbital Ring
               </p>
-              <h2 style={{ fontSize: "clamp(1.75rem, 3vw, 2.3rem)", fontWeight: 700, color: textPrimary, letterSpacing: "-0.02em", lineHeight: 1.2 }}>
+              <h2 style={{ fontSize: "clamp(1.75rem, 3vw, 2.3rem)", fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.02em", lineHeight: 1.2 }}>
                 A Symbol of the Connected Ecosystem
               </h2>
             </div>
@@ -164,8 +158,8 @@ export default function About() {
                     }}
                   />
                   <div>
-                    <div style={{ fontSize: "0.9rem", fontWeight: 700, color: textPrimary, marginBottom: 4 }}>{item.label}</div>
-                    <p style={{ fontSize: "0.875rem", color: textSub, lineHeight: 1.7 }}>{item.desc}</p>
+                    <div style={{ fontSize: "0.9rem", fontWeight: 700, color: colors.textPrimary, marginBottom: 4 }}>{item.label}</div>
+                    <p style={{ fontSize: "0.875rem", color: colors.textSub, lineHeight: 1.7 }}>{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -210,7 +204,7 @@ export default function About() {
 
             {/* Mission */}
             <div
-              style={{ background: missionBg, border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "#E2E8F0"}`, borderRadius: 16, padding: "40px" }}
+              style={{ background: missionBg, border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : colors.cardBorder}`, borderRadius: 16, padding: "40px" }}
               className="flex flex-col gap-5"
             >
               <div className="flex items-center gap-3">
@@ -221,7 +215,7 @@ export default function About() {
                 </div>
                 <span style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#0055E5" }}>Mission</span>
               </div>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: isDark ? "#F8FAFC" : "#0B1D35", lineHeight: 1.45, letterSpacing: "-0.01em" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: colors.textPrimary, lineHeight: 1.45, letterSpacing: "-0.01em" }}>
                 Four pillars that define how we show up for every client, every day.
               </h3>
               <ol className="flex flex-col gap-3.5">
@@ -253,13 +247,13 @@ export default function About() {
       </section>
 
       {/* ── ONE STANDARD OF EXCELLENCE ────────────────────────── */}
-      <section style={{ background: pageBg, paddingTop: 72, paddingBottom: 72 }} className="px-6 lg:px-12">
+      <section style={{ background: colors.pageBg, paddingTop: 72, paddingBottom: 72 }} className="px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="mb-10 text-center">
-            <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.1rem)", fontWeight: 700, color: textPrimary, letterSpacing: "-0.02em" }}>
+            <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.1rem)", fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.02em" }}>
               One Standard of Excellence
             </h2>
-            <p style={{ marginTop: 8, fontSize: "0.875rem", color: textMuted }}>Five pillars. Indivisible.</p>
+            <p style={{ marginTop: 8, fontSize: "0.875rem", color: colors.textMuted }}>Five pillars. Indivisible.</p>
           </div>
 
           <div className="flex flex-wrap justify-center gap-3">
@@ -267,8 +261,8 @@ export default function About() {
               <div key={pillar} className="flex items-center gap-3">
                 <div
                   style={{
-                    background: pillabBg,
-                    border: `1px solid ${pillBorder}`,
+                    background: colors.cardBg,
+                    border: `1px solid ${colors.cardBorder}`,
                     borderRadius: 10,
                     padding: "14px 24px",
                     display: "flex",
@@ -278,7 +272,7 @@ export default function About() {
                   }}
                 >
                   <div style={{ width: 8, height: 8, borderRadius: "50%", background: "linear-gradient(135deg, #0055E5, #38BDF8)", flexShrink: 0 }} />
-                  <span style={{ fontSize: "0.875rem", fontWeight: 600, color: textPrimary }}>{pillar}</span>
+                  <span style={{ fontSize: "0.875rem", fontWeight: 600, color: colors.textPrimary }}>{pillar}</span>
                 </div>
                 {i < pillars.length - 1 && (
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={isDark ? "rgba(255,255,255,0.20)" : "#CBD5E1"} strokeWidth="2.5" strokeLinecap="round">
@@ -325,16 +319,16 @@ export default function About() {
       </section>
 
       {/* ── TEAM ──────────────────────────────────────────────── */}
-      <section style={{ background: pageBg, paddingTop: 96, paddingBottom: 96 }} className="px-6 lg:px-12">
+      <section style={{ background: colors.pageBg, paddingTop: 96, paddingBottom: 96 }} className="px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="mb-14">
             <p className="font-bold tracking-[0.14em] uppercase mb-3" style={{ fontSize: "0.6875rem", color: "#0055E5" }}>
               Leadership & Governance
             </p>
-            <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.5rem)", fontWeight: 700, color: textPrimary, letterSpacing: "-0.02em" }}>
+            <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.5rem)", fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.02em" }}>
               Our Team
             </h2>
-            <p style={{ marginTop: 10, fontSize: "0.9375rem", color: textSub }}>
+            <p style={{ marginTop: 10, fontSize: "0.9375rem", color: colors.textSub }}>
               Seasoned leaders with the depth to solve, not just advise.
             </p>
           </div>
@@ -345,8 +339,8 @@ export default function About() {
                 key={member.name}
                 className="group flex flex-col overflow-hidden transition-all duration-200 hover:-translate-y-1"
                 style={{
-                  background: cardBg,
-                  border: `1px solid ${cardBorder}`,
+                  background: colors.cardBg,
+                  border: `1px solid ${colors.cardBorder}`,
                   borderRadius: 16,
                   boxShadow: isDark
                     ? "0 2px 12px rgba(0,0,0,0.30)"
@@ -362,7 +356,7 @@ export default function About() {
                 </div>
                 <div className="flex flex-col gap-2 p-5 flex-1">
                   <div>
-                    <div style={{ fontSize: "0.9375rem", fontWeight: 700, color: textPrimary }}>{member.name}</div>
+                    <div style={{ fontSize: "0.9375rem", fontWeight: 700, color: colors.textPrimary }}>{member.name}</div>
                     <div style={{ fontSize: "0.775rem", fontWeight: 600, color: "#0055E5", marginTop: 1 }}>{member.title}</div>
                   </div>
                   <div style={{ fontSize: "0.75rem", color: isDark ? "#7AABFF" : "#6B8CAE", background: isDark ? "rgba(0,85,229,0.14)" : "#EFF4FF", borderRadius: 4, padding: "2px 8px", alignSelf: "flex-start" }}>

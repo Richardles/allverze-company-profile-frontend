@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { useTheme } from "../ThemeContext";
-import { API_BASE_URL, WHATSAPP_URL, PUBLIC_EMAIL } from "../config";
+import { useTheme } from "../theme/ThemeContext";
+import { inputFocusHandlers, useThemeColors } from "../theme/useThemeColors";
+import { useContactForm } from "../contact/ContactFormContext";
+import { CONTACT_INTENTS } from "../data/contact";
+import { WHATSAPP_URL, PUBLIC_EMAIL } from "../config";
 
 const faqs = [
   {
@@ -21,45 +24,27 @@ const faqs = [
   },
 ];
 
-const intents = [
-  "Custom Software Engineering",
-  "Mobile Application Development",
-  "Application Performance Monitoring",
-  "Performance & Automation Testing",
-  "Discovery & Advisory",
-  "Other",
-];
-
 export default function Contact() {
   const { isDark } = useTheme();
+  const colors = useThemeColors();
+  const inputHandlers = inputFocusHandlers(colors);
+  const {
+    form,
+    intent,
+    sending,
+    error,
+    submitted,
+    confirmation,
+    leadRef,
+    updateField,
+    setIntent,
+    handleSubmit,
+    reset,
+  } = useContactForm();
+
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [intent, setIntent] = useState(intents[0]);
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
-  const [submitted, setSubmitted] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [error, setError] = useState("");
-  const [confirmation, setConfirmation] = useState<"sent" | "failed" | null>(null);
-  const [leadRef, setLeadRef] = useState<string | null>(null);
 
-  const pageBg      = isDark ? "#060E1A" : "#F8FAFC";
-  const cardBg      = isDark ? "#0B1D35" : "#FFFFFF";
-  const cardBorder  = isDark ? "rgba(255,255,255,0.08)" : "#E2E8F0";
-  const textPrimary = isDark ? "#F8FAFC" : "#0B1D35";
-  const textSub     = isDark ? "rgba(248,250,252,0.55)" : "#4A6080";
-  const textMuted   = isDark ? "rgba(248,250,252,0.35)" : "#8AA0BD";
-
-  const inputBase: React.CSSProperties = {
-    width: "100%",
-    background: isDark ? "rgba(255,255,255,0.04)" : "#F8FAFC",
-    border: `1px solid ${isDark ? "rgba(255,255,255,0.10)" : "#DDE4EE"}`,
-    borderRadius: 9,
-    padding: "11px 14px",
-    fontSize: "0.9rem",
-    color: textPrimary,
-    outline: "none",
-    transition: "border-color 150ms",
-    fontFamily: "inherit",
-  };
+  const { pageBg, cardBg, cardBorder, textPrimary, textSub, textMuted, inputBase } = colors;
 
   return (
     <main style={{ paddingTop: 72 }}>
@@ -270,11 +255,7 @@ export default function Contact() {
                   )}
                 </div>
                 <button
-                  onClick={() => {
-                    setSubmitted(false);
-                    setConfirmation(null);
-                    setLeadRef(null);
-                  }}
+                  onClick={reset}
                   className="text-sm font-semibold hover:underline"
                   style={{ color: "#0055E5" }}
                 >
@@ -282,37 +263,7 @@ export default function Contact() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={async (e) => {
-                e.preventDefault();
-                setSending(true);
-                setError("");
-                try {
-                  const body = JSON.stringify({
-                    name: form.name,
-                    email: form.email,
-                    phone: form.phone,
-                    message: `[Intent: ${intent}]\n\n${form.message}`,
-                    botcheck: "",
-                  });
-                  const res = await fetch(`${API_BASE_URL}/api/contact`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body,
-                  });
-                  const data = await res.json();
-                  if (data.success) {
-                    setConfirmation(data.confirmation === "failed" ? "failed" : "sent");
-                    setLeadRef(data.leadRef ?? null);
-                    setSubmitted(true);
-                  } else {
-                    setError(data.message || "Something went wrong. Please try again.");
-                  }
-                } catch {
-                  setError("Unable to reach the server. Please try again later.");
-                } finally {
-                  setSending(false);
-                }
-              }} className="flex flex-col gap-6">
+              <form onSubmit={(e) => { e.preventDefault(); void handleSubmit(); }} className="flex flex-col gap-6" aria-busy={sending || undefined}>
                 <div>
                   <h2 style={{ fontSize: "1.3rem", fontWeight: 700, color: textPrimary, letterSpacing: "-0.01em" }}>
                     Request a Strategy Call
@@ -328,16 +279,17 @@ export default function Contact() {
                     Primary service need
                   </label>
                   <div className="flex flex-wrap gap-2">
-                    {intents.map((opt) => (
+                    {CONTACT_INTENTS.map((opt) => (
                       <button
                         key={opt}
                         type="button"
+                        disabled={sending}
                         onClick={() => setIntent(opt)}
                         className="text-xs font-semibold transition-all duration-150"
                         style={
                           intent === opt
-                            ? { background: "#0055E5", color: "#FFFFFF", borderRadius: 7, padding: "7px 14px", border: "1px solid #0055E5" }
-                            : { background: "transparent", color: isDark ? "rgba(248,250,252,0.55)" : "#4A6080", borderRadius: 7, padding: "7px 14px", border: `1px solid ${isDark ? "rgba(255,255,255,0.12)" : "#DDE4EE"}` }
+                            ? { background: "#0055E5", color: "#FFFFFF", borderRadius: 7, padding: "7px 14px", border: "1px solid #0055E5", opacity: sending ? 0.55 : 1 }
+                            : { background: "transparent", color: isDark ? "rgba(248,250,252,0.55)" : "#4A6080", borderRadius: 7, padding: "7px 14px", border: `1px solid ${isDark ? "rgba(255,255,255,0.12)" : "#DDE4EE"}`, opacity: sending ? 0.55 : 1 }
                         }
                       >
                         {opt}
@@ -350,11 +302,11 @@ export default function Contact() {
                   <label style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>Full Name</label>
                   <input
                     type="text" required placeholder="Jane Smith"
+                    disabled={sending}
                     value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    style={inputBase}
-                    onFocus={(e) => ((e.target as HTMLInputElement).style.borderColor = "#0055E5")}
-                    onBlur={(e) => ((e.target as HTMLInputElement).style.borderColor = isDark ? "rgba(255,255,255,0.10)" : "#DDE4EE")}
+                    onChange={(e) => updateField("name", e.target.value)}
+                    style={{ ...inputBase, opacity: sending ? 0.55 : 1, cursor: sending ? "not-allowed" : undefined }}
+                    {...inputHandlers}
                   />
                 </div>
 
@@ -362,11 +314,11 @@ export default function Contact() {
                   <label style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>Email</label>
                   <input
                     type="email" required placeholder="jane@company.com"
+                    disabled={sending}
                     value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    style={inputBase}
-                    onFocus={(e) => ((e.target as HTMLInputElement).style.borderColor = "#0055E5")}
-                    onBlur={(e) => ((e.target as HTMLInputElement).style.borderColor = isDark ? "rgba(255,255,255,0.10)" : "#DDE4EE")}
+                    onChange={(e) => updateField("email", e.target.value)}
+                    style={{ ...inputBase, opacity: sending ? 0.55 : 1, cursor: sending ? "not-allowed" : undefined }}
+                    {...inputHandlers}
                   />
                 </div>
 
@@ -374,11 +326,11 @@ export default function Contact() {
                   <label style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>Phone Number</label>
                   <input
                     type="tel" required placeholder="+62 812 345 6789"
+                    disabled={sending}
                     value={form.phone}
-                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    style={inputBase}
-                    onFocus={(e) => ((e.target as HTMLInputElement).style.borderColor = "#0055E5")}
-                    onBlur={(e) => ((e.target as HTMLInputElement).style.borderColor = isDark ? "rgba(255,255,255,0.10)" : "#DDE4EE")}
+                    onChange={(e) => updateField("phone", e.target.value)}
+                    style={{ ...inputBase, opacity: sending ? 0.55 : 1, cursor: sending ? "not-allowed" : undefined }}
+                    {...inputHandlers}
                   />
                 </div>
 
@@ -386,12 +338,12 @@ export default function Contact() {
                   <label style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>Message</label>
                   <textarea
                     required rows={4}
+                    disabled={sending}
                     placeholder="Tell us about your challenge, goals, timeline, and the outcome you want..."
                     value={form.message}
-                    onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    style={{ ...inputBase, resize: "none" }}
-                    onFocus={(e) => ((e.target as HTMLTextAreaElement).style.borderColor = "#0055E5")}
-                    onBlur={(e) => ((e.target as HTMLTextAreaElement).style.borderColor = isDark ? "rgba(255,255,255,0.10)" : "#DDE4EE")}
+                    onChange={(e) => updateField("message", e.target.value)}
+                    style={{ ...inputBase, resize: "none", opacity: sending ? 0.55 : 1, cursor: sending ? "not-allowed" : undefined }}
+                    {...inputHandlers}
                   />
                 </div>
 
@@ -407,8 +359,17 @@ export default function Contact() {
                     className="w-full text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
                     style={{ background: "#0055E5", borderRadius: 9, padding: "13px", boxShadow: "0 2px 12px rgba(0,85,229,0.28)" }}
                   >
-                    {sending ? "Sending..." : "Send Inquiry →"}
+                    {sending ? (
+                      <span className="flex items-center gap-2 justify-center">
+                        <Spinner /> Sending your inquiry…
+                      </span>
+                    ) : "Send Inquiry →"}
                   </button>
+                  {sending && (
+                    <p role="status" aria-live="polite" className="text-center" style={{ fontSize: "0.8125rem", color: textSub }}>
+                      We're sending your inquiry — this takes a few seconds.
+                    </p>
+                  )}
                   <p style={{ fontSize: "0.75rem", textAlign: "center", color: textMuted }}>
                     Confidential by default · NDA available before discovery
                   </p>
@@ -478,5 +439,17 @@ export default function Contact() {
         </div>
       </section>
     </main>
+  );
+}
+
+function Spinner({ className }: { className?: string }) {
+  return (
+    <svg
+      className={`animate-spin ${className ?? ""}`}
+      width="16" height="16" viewBox="0 0 24 24" fill="none"
+    >
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="62.83" strokeLinecap="round" style={{ opacity: 0.25 }} />
+      <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+    </svg>
   );
 }

@@ -6,4 +6,4 @@ export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_ME
 
 export const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 
-export const PUBLIC_EMAIL = import.meta.env.VITE_PUBLIC_EMAIL || "team@allverze.com";
+export const PUBLIC_EMAIL = import.meta.env.VITE_PUBLIC_EMAIL || "hello@allverze.com";
