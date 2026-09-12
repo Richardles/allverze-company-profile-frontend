@@ -12,9 +12,10 @@ npm-workspaces monorepo with two packages:
 │   └── src/
 │       ├── api/        contact form API client (submitContact)
 │       ├── components/ Header, Footer, WhatsAppWidget, OrbitalRing
+│       ├── contact/    ContactFormProvider + useContactForm (app-level context)
 │       ├── data/       contact form copy (intents)
-│       ├── hooks/      useContactForm
 │       ├── imports/    logo.webp
+│       ├── lib/        browser helpers (getBrowserTimezone)
 │       ├── pages/      Home, About, Services, Contact
 │       ├── theme/      ThemeContext, ThemeProvider, useThemeColors
 │       ├── types/      shared TS types
