@@ -15,6 +15,7 @@ export interface ContactFormState {
 
 export interface ContactPayload extends ContactFormState {
   botcheck?: string;
+  timezone?: string;
 }
 
 export interface ContactResponse {

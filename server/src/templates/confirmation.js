@@ -4,6 +4,7 @@ import { EMAIL_LOGO_SRC } from './logo.js';
 export function renderConfirmation({
   leadRef,
   receivedAt,
+  userReceivedAt,
   intentLabel,
   name,
   phone,
@@ -27,8 +28,8 @@ export function renderConfirmation({
 Thank you for reaching out to Allverze. We've received your message, and our team will review your inquiry within one business day.
 
 Reference: ${leadRef}
-Submitted: ${receivedAt}
-Intent: ${intentLabel}
+Submitted: ${userReceivedAt ?? receivedAt}
+${userReceivedAt ? `Allverze Time: ${receivedAt}\n` : ''}Intent: ${intentLabel}
 Phone: ${phone}
 
 Need a faster response? Reach us directly:
@@ -83,8 +84,14 @@ The Allverze Team`,
                       </tr>
                       <tr>
                         <td style="padding:6px 0;font-size:0.8125rem;color:#8AA0BD;vertical-align:top;">Submitted</td>
-                        <td style="padding:6px 0;font-size:0.875rem;font-weight:600;color:#0B1D35;">${receivedAt}</td>
+                        <td style="padding:6px 0;font-size:0.875rem;font-weight:600;color:#0B1D35;">${userReceivedAt ?? receivedAt}</td>
                       </tr>
+                      ${userReceivedAt
+                        ? `<tr>
+                            <td style="padding:6px 0;font-size:0.8125rem;color:#8AA0BD;vertical-align:top;">Allverze Time</td>
+                            <td style="padding:6px 0;font-size:0.8125rem;color:#8AA0BD;">${receivedAt}</td>
+                          </tr>`
+                        : ''}
                       <tr>
                         <td style="padding:6px 0;font-size:0.8125rem;color:#8AA0BD;vertical-align:top;">Intent</td>
                         <td style="padding:6px 0;font-size:0.875rem;font-weight:600;color:#0B1D35;">${intentLabel}</td>

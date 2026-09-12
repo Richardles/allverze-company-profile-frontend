@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 import { extractIntent } from '../lib/intents.js';
 import { buildLeadRef } from '../lib/leadRef.js';
-import { formatWhatsAppDisplay, formatReceivedAt } from '../lib/format.js';
+import { formatWhatsAppDisplay, formatReceivedAt, formatUserReceivedAt } from '../lib/format.js';
 import { buildCompanyWhatsAppHref, buildLeadWhatsAppHref } from '../lib/whatsapp.js';
 import { renderConfirmation } from '../templates/confirmation.js';
 import { renderInbound } from '../templates/inbound.js';
@@ -24,6 +24,10 @@ export function createEmailService(config) {
   return {
     async processInquiry(contact) {
       const receivedAt = formatReceivedAt(new Date(), config.timezone, config.timezoneLabel);
+      const userReceivedAt =
+        contact.timezone && contact.timezone !== config.timezone
+          ? formatUserReceivedAt(new Date(), contact.timezone)
+          : null;
       const { label: intentLabel, cleanMessage } = extractIntent(contact.message);
       const leadRef = buildLeadRef(intentLabel, config.timezone);
 
@@ -42,6 +46,7 @@ export function createEmailService(config) {
         ...renderInbound({
           leadRef,
           receivedAt,
+          userReceivedAt,
           intentLabel,
           name: contact.name,
           email: contact.email,
@@ -60,6 +65,7 @@ export function createEmailService(config) {
         intentLabel,
         leadRef,
         receivedAt,
+        userReceivedAt,
         waCompanyHref,
       });
 
@@ -67,7 +73,7 @@ export function createEmailService(config) {
     },
   };
 
-  async function sendConfirmation({ contact, cleanMessage, intentLabel, leadRef, receivedAt, waCompanyHref }) {
+  async function sendConfirmation({ contact, cleanMessage, intentLabel, leadRef, receivedAt, userReceivedAt, waCompanyHref }) {
     try {
       await sendWithRetry(transporter, {
         from: `Allverze Corporation <${config.fromEmail}>`,
@@ -76,6 +82,7 @@ export function createEmailService(config) {
         ...renderConfirmation({
           leadRef,
           receivedAt,
+          userReceivedAt,
           intentLabel,
           name: contact.name,
           phone: contact.phone,

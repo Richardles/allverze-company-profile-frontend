@@ -47,3 +47,16 @@ export function formatReceivedAt(date, timezone, label) {
   }).format(date);
   return `${formatted} ${label}`;
 }
+
+export function formatUserReceivedAt(date, timezone) {
+  return new Intl.DateTimeFormat('en-GB', {
+    timeZone: timezone,
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+    timeZoneName: 'short',
+  }).format(date);
+}

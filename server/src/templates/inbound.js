@@ -1,7 +1,7 @@
 import { escapeHtml } from '../lib/format.js';
 import { EMAIL_LOGO_SRC } from './logo.js';
 
-export function renderInbound({ leadRef, receivedAt, intentLabel, name, email, phone, message, waHref }) {
+export function renderInbound({ leadRef, receivedAt, userReceivedAt, intentLabel, name, email, phone, message, waHref }) {
   const safeName = escapeHtml(name);
   const safeEmail = escapeHtml(email);
   const safePhone = escapeHtml(phone);
@@ -12,7 +12,7 @@ export function renderInbound({ leadRef, receivedAt, intentLabel, name, email, p
     text: `NEW CONTACT MESSAGE
 Lead Reference: ${leadRef}
 Submitted: ${receivedAt}
-Intent: ${intentLabel}
+${userReceivedAt ? `Customer Time: ${userReceivedAt}\n` : ''}Intent: ${intentLabel}
 
 Name: ${name}
 Email: ${email}
@@ -61,6 +61,12 @@ RESPONSE SLA: Reply to this customer within 1 business day.`,
                   <td style="padding-top:6px;font-size:0.75rem;color:#8AA0BD;">Submitted</td>
                   <td style="padding-top:6px;text-align:right;font-size:0.8125rem;color:#4A6080;">${receivedAt}</td>
                 </tr>
+                ${userReceivedAt
+                  ? `<tr>
+                      <td style="padding-top:6px;font-size:0.75rem;color:#8AA0BD;">Customer Time</td>
+                      <td style="padding-top:6px;text-align:right;font-size:0.75rem;color:#8AA0BD;">${userReceivedAt}</td>
+                    </tr>`
+                  : ''}
               </table>
             </td>
           </tr>

@@ -2,6 +2,7 @@ import { useState, useCallback, type ReactNode } from "react";
 import { ContactFormContext, type ContactFormContextValue } from "./ContactFormContext";
 import { submitContact, ContactSubmissionError } from "../api/contact";
 import { CONTACT_INTENTS } from "../data/contact";
+import { getBrowserTimezone } from "../lib/browser";
 import type { ContactFormState, ContactIntent } from "../types/contact";
 
 export function ContactFormProvider({ children }: { children: ReactNode }) {
@@ -26,6 +27,7 @@ export function ContactFormProvider({ children }: { children: ReactNode }) {
         ...form,
         message: `[Intent: ${intent}]\n\n${form.message}`,
         botcheck: "",
+        timezone: getBrowserTimezone(),
       });
       setConfirmation(data.confirmation === "failed" ? "failed" : "sent");
       setLeadRef(data.leadRef ?? null);
