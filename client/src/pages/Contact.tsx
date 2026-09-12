@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { useTheme } from "../theme/ThemeContext";
 import { inputFocusHandlers, useThemeColors } from "../theme/useThemeColors";
 import { useContactForm } from "../contact/ContactFormContext";
 import { CONTACT_INTENTS } from "../data/contact";
 import { WHATSAPP_URL, PUBLIC_EMAIL } from "../config";
+import ShieldIcon from "../components/ShieldIcon";
 
 const faqs = [
   {
@@ -21,6 +22,10 @@ const faqs = [
   {
     q: "Can we establish an NDA before discussing our project details?",
     a: "Absolutely — and we encourage it. A mutual NDA can be executed before any technical or business details are shared. Simply request one in your inquiry and we'll have a signed agreement in place within 24 hours.",
+  },
+  {
+    q: "Do you work with early-stage startups or only enterprise clients?",
+    a: "We work with both. Whether you're a funded startup building your first product or an enterprise team modernizing legacy infrastructure, we tailor our engagement model to your stage, budget, and goals.",
   },
 ];
 
@@ -49,27 +54,42 @@ export default function Contact() {
   return (
     <main style={{ paddingTop: 72 }}>
       {/* ── HEADER BANNER ─────────────────────────────────────── */}
-      <section style={{ background: "#0B1D35", paddingTop: 88, paddingBottom: 88 }} className="px-6 lg:px-12">
-        <div className="max-w-7xl mx-auto">
-          <p className="font-bold tracking-[0.14em] uppercase mb-5" style={{ fontSize: "0.6875rem", color: "#38BDF8" }}>
-            Partnership Hub
+      <section
+        style={{ background: "#0B1D35", paddingTop: 88, paddingBottom: 88, position: "relative", overflow: "hidden" }}
+        className="px-6 lg:px-12"
+      >
+        <div className="absolute inset-0 pointer-events-none dot-grid" style={{ opacity: 0.3 }} />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: "linear-gradient(160deg, rgba(0,85,229,0.08) 0%, transparent 60%)" }}
+        />
+        <div className="max-w-7xl mx-auto relative">
+          <p className="font-bold tracking-[0.14em] uppercase mb-5 fade-in-up" style={{ fontSize: "0.6875rem", color: "#38BDF8" }}>
+            Request a Strategy Call
           </p>
           <h1
+            className="fade-in-up fade-in-up-1"
             style={{
               fontSize: "clamp(2.4rem, 5vw, 3.6rem)",
               fontWeight: 800,
               color: "#F8FAFC",
               letterSpacing: "-0.025em",
               lineHeight: 1.1,
-              maxWidth: 700,
+              maxWidth: 640,
             }}
           >
-            {"Build What Moves Your "}
-            <span style={{ color: "#38BDF8" }}>Business Forward.</span>
+            {"Let's solve your "}
+            <span style={{ color: "#38BDF8" }}>next challenge.</span>
           </h1>
-          <p style={{ marginTop: 18, fontSize: "1.0625rem", color: "rgba(248,250,252,0.55)", lineHeight: 1.75, maxWidth: 520 }}>
-            Tell us what you need, where the friction is, and what success looks like. We'll help map the right technical path with the clarity and discipline your team expects.
+          <p className="fade-in-up fade-in-up-2" style={{ marginTop: 18, fontSize: "1.0625rem", color: "rgba(248,250,252,0.55)", lineHeight: 1.75, maxWidth: 480 }}>
+            No sales scripts, no pressure — just a direct line to engineers and strategists who listen first.
           </p>
+          <div className="flex items-center gap-2 mt-7 fade-in-up fade-in-up-3">
+            <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22C55E", flexShrink: 0 }} />
+            <span style={{ fontSize: "0.8125rem", fontWeight: 600, color: "rgba(248,250,252,0.55)" }}>
+              Average response time: under 4 business hours
+            </span>
+          </div>
         </div>
       </section>
 
@@ -78,19 +98,19 @@ export default function Contact() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
           {/* Left: channels */}
           <div className="lg:col-span-2 flex flex-col gap-5">
-            <div className="mb-2">
+            <div className="mb-2 reveal">
               <h2 style={{ fontSize: "1.2rem", fontWeight: 700, color: textPrimary, letterSpacing: "-0.01em" }}>
                 Direct Channels
               </h2>
               <p style={{ marginTop: 4, fontSize: "0.875rem", color: textMuted }}>
-                Choose the contact method that fits your current decision stage.
+                Reach us through the channel that works best for you.
               </p>
             </div>
 
             {/* Email */}
             <a
               href={`mailto:${PUBLIC_EMAIL}`}
-              className="flex items-center gap-4 transition-all duration-150 hover:-translate-y-0.5"
+              className="reveal flex items-center gap-4 card-hover"
               style={{
                 background: cardBg,
                 border: `1px solid ${cardBorder}`,
@@ -112,12 +132,14 @@ export default function Contact() {
               </div>
             </a>
 
-            {/* WhatsApp */}
+            {/* WhatsApp card */}
             <div
+              className="card-hover reveal"
+              data-reveal-delay="70"
               style={{
                 background: "#0B1D35",
                 border: "1px solid rgba(56,189,248,0.18)",
-                borderRadius: 12,
+                borderRadius: 14,
                 padding: "22px 20px",
                 display: "flex",
                 flexDirection: "column",
@@ -126,35 +148,38 @@ export default function Contact() {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div style={{ width: 38, height: 38, borderRadius: 9, background: "rgba(37,211,102,0.14)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366">
+                  <div style={{ width: 40, height: 40, borderRadius: 10, background: "linear-gradient(135deg,rgba(37,211,102,0.20),rgba(18,140,126,0.15))", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#25D366">
                       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                     </svg>
                   </div>
                   <div>
-                    <div style={{ fontSize: "0.875rem", fontWeight: 600, color: "#F8FAFC" }}>WhatsApp Business</div>
-                    <div style={{ fontSize: "0.75rem", color: "rgba(248,250,252,0.40)" }}>Solutions Engineer</div>
+                    <div style={{ fontSize: "0.875rem", fontWeight: 700, color: "#F8FAFC" }}>WhatsApp Business</div>
+                    <div style={{ fontSize: "0.75rem", color: "rgba(248,250,252,0.40)" }}>Solutions Engineer · Direct line</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#22C55E" }} />
-                  <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "#22C55E" }}>Online</span>
+                  <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "#22C55E" }}>Online</span>
                 </div>
               </div>
               <button
                 onClick={() => window.open(WHATSAPP_URL, "_blank", "noopener")}
-                className="w-full text-sm font-semibold text-white transition-opacity hover:opacity-90"
-                style={{ background: "#25D366", borderRadius: 9, padding: "11px" }}
+                className="w-full text-sm font-bold text-white transition-all duration-150 hover:opacity-90 active:scale-[0.99] flex items-center justify-center gap-2"
+                style={{ background: "linear-gradient(135deg,#25D366,#128C7E)", borderRadius: 9, padding: "11px" }}
               >
-                Start WhatsApp Conversation
+                Chat with Solutions Engineer
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
               </button>
-              <p style={{ fontSize: "0.75rem", textAlign: "center", color: "rgba(248,250,252,0.30)" }}>
+              <p style={{ fontSize: "0.72rem", textAlign: "center", color: "rgba(248,250,252,0.30)" }}>
                 Typically responds within minutes
               </p>
             </div>
 
             {/* Social links */}
-            <div className="flex gap-3">
+            <div className="reveal flex gap-3" data-reveal-delay="140">
               {[
                 {
                   label: "LinkedIn",
@@ -166,13 +191,18 @@ export default function Contact() {
                   href: "https://github.com",
                   icon: <svg width="16" height="16" viewBox="0 0 24 24" fill={isDark ? "#F8FAFC" : "#0B1D35"}><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" /></svg>,
                 },
+                {
+                  label: "Instagram",
+                  href: "https://instagram.com",
+                  icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="#0055E5"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" /></svg>,
+                },
               ].map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm font-semibold transition-all hover:-translate-y-0.5"
+                  className="flex items-center gap-2 text-sm font-semibold card-hover flex-1 justify-center"
                   style={{
                     background: cardBg,
                     border: `1px solid ${cardBorder}`,
@@ -188,6 +218,28 @@ export default function Contact() {
                 </a>
               ))}
             </div>
+
+            {/* Trust signal */}
+            <div
+              className="reveal"
+              data-reveal-delay="210"
+              style={{
+                background: isDark ? "rgba(0,85,229,0.06)" : "rgba(0,85,229,0.04)",
+                border: `1px solid ${isDark ? "rgba(0,85,229,0.18)" : "rgba(0,85,229,0.12)"}`,
+                borderRadius: 10,
+                padding: "14px 16px",
+                display: "flex",
+                gap: 10,
+                alignItems: "flex-start",
+              }}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0055E5" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginTop: 1 }}>
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+              <p style={{ fontSize: "0.78rem", color: textSub, lineHeight: 1.6 }}>
+                All communications are 100% confidential. A mutual NDA can be signed before any details are shared.
+              </p>
+            </div>
           </div>
 
           {/* Right: Form */}
@@ -196,87 +248,93 @@ export default function Contact() {
             style={{
               background: cardBg,
               border: `1px solid ${cardBorder}`,
-              borderRadius: 16,
+              borderRadius: 18,
               padding: "40px",
-              boxShadow: isDark ? "0 2px 24px rgba(0,0,0,0.30)" : "0 2px 20px rgba(0,0,0,0.06)",
+              boxShadow: isDark ? "0 2px 32px rgba(0,0,0,0.35)" : "0 2px 24px rgba(0,0,0,0.07)",
             }}
           >
             {submitted ? (
-              <div className="flex flex-col items-center gap-5 py-14 text-center">
-                <div style={{ width: 60, height: 60, borderRadius: "50%", background: "#0055E5", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
+              <div className="flex flex-col items-center gap-6 py-10 text-center">
+                <div
+                  className="animate-pop-in"
+                  style={{
+                    width: 68, height: 68, borderRadius: "50%",
+                    background: "linear-gradient(135deg, #0055E5 0%, #38BDF8 100%)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    boxShadow: "0 4px 20px rgba(0,85,229,0.35)",
+                  }}
+                >
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </div>
                 <div>
-                  <h3 style={{ fontSize: "1.3rem", fontWeight: 700, color: textPrimary }}>Inquiry Received</h3>
-                  <p style={{ marginTop: 6, fontSize: "0.875rem", color: textSub, maxWidth: 320 }}>
-                    A solutions specialist will review your inquiry and respond within one business day.
+                  <h3 style={{ fontSize: "1.35rem", fontWeight: 700, color: textPrimary, letterSpacing: "-0.01em" }}>Message Received</h3>
+                  <p style={{ marginTop: 8, fontSize: "0.9rem", color: textSub, maxWidth: 320, lineHeight: 1.7 }}>
+                    A Solutions Engineer will be in touch within one business day. Check your inbox.
                   </p>
-                  {leadRef && (
-                    <div
+                </div>
+                {leadRef && (
+                  <div
+                    className="animate-pop-in"
+                    style={{
+                      background: isDark ? "rgba(0,85,229,0.08)" : "#EFF4FF",
+                      border: `1px solid ${isDark ? "rgba(0,85,229,0.22)" : "rgba(0,85,229,0.15)"}`,
+                      borderRadius: 10,
+                      padding: "14px 24px",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 4,
+                      minWidth: 240,
+                      animationDelay: "80ms",
+                    }}
+                  >
+                    <span style={{ fontSize: "0.67rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: textMuted }}>Reference Number</span>
+                    <span
                       style={{
-                        width: "100%",
-                        maxWidth: 320,
-                        marginTop: 16,
-                        border: `1px dashed ${isDark ? "rgba(56,189,248,0.35)" : "rgba(0,85,229,0.35)"}`,
-                        background: isDark ? "rgba(56,189,248,0.06)" : "rgba(0,85,229,0.05)",
-                        borderRadius: 12,
-                        padding: "12px 20px",
-                        textAlign: "center",
+                        fontSize: "0.9375rem",
+                        fontWeight: 700,
+                        letterSpacing: "0.02em",
+                        fontFamily: "'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace",
+                        color: "#0055E5",
+                        fontVariantNumeric: "tabular-nums",
                       }}
                     >
-                      <div style={{ fontSize: "0.6875rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>
-                        Your Reference Number
-                      </div>
-                      <div
-                        style={{
-                          marginTop: 4,
-                          fontSize: "0.9375rem",
-                          fontWeight: 700,
-                          letterSpacing: "0.02em",
-                          fontFamily: "'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace",
-                          color: isDark ? "#38BDF8" : "#0055E5",
-                        }}
-                      >
-                        {leadRef}
-                      </div>
-                    </div>
-                  )}
-                  {confirmation === "sent" && (
-                    <p style={{ fontSize: "0.8125rem", color: textMuted, maxWidth: 300 }}>
-                      A confirmation email has been sent to {form.email}.
-                    </p>
-                  )}
-                  {confirmation === "failed" && (
-                    <p style={{ fontSize: "0.8125rem", color: textMuted, maxWidth: 300 }}>
-                      Your message was received, but our confirmation email could not be delivered.
-                    </p>
-                  )}
-                </div>
-                <button
-                  onClick={reset}
-                  className="text-sm font-semibold hover:underline"
-                  style={{ color: "#0055E5" }}
-                >
+                      {leadRef}
+                    </span>
+                    <span style={{ fontSize: "0.72rem", color: textMuted }}>Keep this for your records</span>
+                    {confirmation === "sent" && (
+                      <span style={{ fontSize: "0.75rem", color: textMuted, marginTop: 2 }}>
+                        Confirmation email sent to {form.email}.
+                      </span>
+                    )}
+                    {confirmation === "failed" && (
+                      <span style={{ fontSize: "0.75rem", color: textMuted, marginTop: 2 }}>
+                        Inbound received, but our confirmation email could not be delivered.
+                      </span>
+                    )}
+                  </div>
+                )}
+                <button onClick={reset} className="text-sm font-semibold hover:underline transition-colors" style={{ color: "#0055E5" }}>
                   Send another message
                 </button>
               </div>
             ) : (
               <form onSubmit={(e) => { e.preventDefault(); void handleSubmit(); }} className="flex flex-col gap-6" aria-busy={sending || undefined}>
                 <div>
-                  <h2 style={{ fontSize: "1.3rem", fontWeight: 700, color: textPrimary, letterSpacing: "-0.01em" }}>
-                    Request a Strategy Call
+                  <h2 style={{ fontSize: "1.35rem", fontWeight: 700, color: textPrimary, letterSpacing: "-0.012em" }}>
+                    Start the Conversation
                   </h2>
-                  <p style={{ marginTop: 4, fontSize: "0.875rem", color: textSub }}>
-                    Share your business context, technical goals, and timeline. We'll define the right next step.
+                  <p style={{ marginTop: 5, fontSize: "0.875rem", color: textSub }}>
+                    Tell us what you need — we handle the rest.
                   </p>
                 </div>
 
-                {/* Intent */}
+                {/* Intent chips */}
                 <div className="flex flex-col gap-2">
-                  <label style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>
-                    Primary service need
+                  <label style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>
+                    What brings you here?
                   </label>
                   <div className="flex flex-wrap gap-2">
                     {CONTACT_INTENTS.map((opt) => (
@@ -285,11 +343,21 @@ export default function Contact() {
                         type="button"
                         disabled={sending}
                         onClick={() => setIntent(opt)}
-                        className="text-xs font-semibold transition-all duration-150"
+                        className={
+                          intent === opt
+                            ? "text-xs font-semibold transition-all duration-150 active:scale-[0.97]"
+                            : "intent-chip transition-all duration-150 active:scale-[0.97]"
+                        }
                         style={
                           intent === opt
-                            ? { background: "#0055E5", color: "#FFFFFF", borderRadius: 7, padding: "7px 14px", border: "1px solid #0055E5", opacity: sending ? 0.55 : 1 }
-                            : { background: "transparent", color: isDark ? "rgba(248,250,252,0.55)" : "#4A6080", borderRadius: 7, padding: "7px 14px", border: `1px solid ${isDark ? "rgba(255,255,255,0.12)" : "#DDE4EE"}`, opacity: sending ? 0.55 : 1 }
+                            ? { background: "#0055E5", color: "#FFFFFF", borderRadius: 7, padding: "7px 14px", border: "1px solid #0055E5", boxShadow: "0 2px 8px rgba(0,85,229,0.28)", opacity: sending ? 0.55 : 1 }
+                            : {
+                                "--chip-border": isDark ? "rgba(255,255,255,0.12)" : "#DDE4EE",
+                                "--chip-color": isDark ? "rgba(248,250,252,0.55)" : "#4A6080",
+                                "--chip-hover-border": "rgba(0,85,229,0.5)",
+                                "--chip-hover-color": "#0055E5",
+                                opacity: sending ? 0.55 : 1,
+                              } as CSSProperties
                         }
                       >
                         {opt}
@@ -298,33 +366,39 @@ export default function Contact() {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-1.5">
-                  <label style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>Full Name</label>
-                  <input
-                    type="text" required placeholder="Jane Smith"
-                    disabled={sending}
-                    value={form.name}
-                    onChange={(e) => updateField("name", e.target.value)}
-                    style={{ ...inputBase, opacity: sending ? 0.55 : 1, cursor: sending ? "not-allowed" : undefined }}
-                    {...inputHandlers}
-                  />
+                {/* Name + Email row */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label htmlFor="contact-name" style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>Full Name *</label>
+                    <input
+                      id="contact-name"
+                      type="text" required placeholder="Jane Smith"
+                      disabled={sending}
+                      value={form.name}
+                      onChange={(e) => updateField("name", e.target.value)}
+                      style={{ ...inputBase, opacity: sending ? 0.55 : 1, cursor: sending ? "not-allowed" : undefined }}
+                      {...inputHandlers}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label htmlFor="contact-email" style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>Work Email *</label>
+                    <input
+                      id="contact-email"
+                      type="email" required placeholder="jane@company.com"
+                      disabled={sending}
+                      value={form.email}
+                      onChange={(e) => updateField("email", e.target.value)}
+                      style={{ ...inputBase, opacity: sending ? 0.55 : 1, cursor: sending ? "not-allowed" : undefined }}
+                      {...inputHandlers}
+                    />
+                  </div>
                 </div>
 
+                {/* Phone */}
                 <div className="flex flex-col gap-1.5">
-                  <label style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>Email</label>
+                  <label htmlFor="contact-phone" style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>Phone Number *</label>
                   <input
-                    type="email" required placeholder="jane@company.com"
-                    disabled={sending}
-                    value={form.email}
-                    onChange={(e) => updateField("email", e.target.value)}
-                    style={{ ...inputBase, opacity: sending ? 0.55 : 1, cursor: sending ? "not-allowed" : undefined }}
-                    {...inputHandlers}
-                  />
-                </div>
-
-                <div className="flex flex-col gap-1.5">
-                  <label style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>Phone Number</label>
-                  <input
+                    id="contact-phone"
                     type="tel" required placeholder="+62 812 345 6789"
                     disabled={sending}
                     value={form.phone}
@@ -332,14 +406,17 @@ export default function Contact() {
                     style={{ ...inputBase, opacity: sending ? 0.55 : 1, cursor: sending ? "not-allowed" : undefined }}
                     {...inputHandlers}
                   />
+                  <p style={{ fontSize: "0.72rem", color: textMuted }}>International format preferred</p>
                 </div>
 
+                {/* Message */}
                 <div className="flex flex-col gap-1.5">
-                  <label style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>Message</label>
+                  <label htmlFor="contact-message" style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>Message *</label>
                   <textarea
+                    id="contact-message"
                     required rows={4}
                     disabled={sending}
-                    placeholder="Tell us about your challenge, goals, timeline, and the outcome you want..."
+                    placeholder="Describe what you're looking to solve — the more context, the faster we can help..."
                     value={form.message}
                     onChange={(e) => updateField("message", e.target.value)}
                     style={{ ...inputBase, resize: "none", opacity: sending ? 0.55 : 1, cursor: sending ? "not-allowed" : undefined }}
@@ -356,22 +433,37 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={sending}
-                    className="w-full text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
-                    style={{ background: "#0055E5", borderRadius: 9, padding: "13px", boxShadow: "0 2px 12px rgba(0,85,229,0.28)" }}
+                    className="group cta-glow w-full text-sm font-bold text-white transition-all duration-150 hover:opacity-90 active:scale-[0.99] flex items-center justify-center gap-2"
+                    style={{
+                      background: sending ? "rgba(0,85,229,0.70)" : "#0055E5",
+                      borderRadius: 10,
+                      padding: "13px",
+                      boxShadow: sending ? "none" : "var(--glow-base, 0 0 0 0 rgba(0,85,229,0), 0 2px 14px rgba(0,85,229,0.32))",
+                      cursor: sending ? "not-allowed" : "pointer",
+                    }}
                   >
                     {sending ? (
-                      <span className="flex items-center gap-2 justify-center">
-                        <Spinner /> Sending your inquiry…
-                      </span>
-                    ) : "Send Inquiry →"}
+                      <>
+                        <Spinner />
+                        Sending your inquiry…
+                      </>
+                    ) : (
+                      <>
+                        Request a Strategy Call
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" className="transition-transform duration-200 group-hover:translate-x-0.5">
+                          <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                      </>
+                    )}
                   </button>
                   {sending && (
                     <p role="status" aria-live="polite" className="text-center" style={{ fontSize: "0.8125rem", color: textSub }}>
                       We're sending your inquiry — this takes a few seconds.
                     </p>
                   )}
-                  <p style={{ fontSize: "0.75rem", textAlign: "center", color: textMuted }}>
-                    Confidential by default · NDA available before discovery
+                  <p style={{ fontSize: "0.72rem", textAlign: "center", color: textMuted, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+                    <ShieldIcon size={12} strokeWidth={2.2} />
+                    100% Confidential &nbsp;·&nbsp; NDA Available &nbsp;·&nbsp; No commitment required
                   </p>
                 </div>
               </form>
@@ -387,8 +479,8 @@ export default function Contact() {
             <p className="font-bold tracking-[0.14em] uppercase mb-3" style={{ fontSize: "0.6875rem", color: "#38BDF8" }}>
               Common Questions
             </p>
-            <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.3rem)", fontWeight: 700, color: "#F8FAFC", letterSpacing: "-0.02em" }}>
-              Frequently Asked
+            <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.3rem)", fontWeight: 700, color: "#F8FAFC", letterSpacing: "-0.022em" }}>
+              Frequently Asked Questions
             </h2>
           </div>
 
@@ -396,12 +488,12 @@ export default function Contact() {
             {faqs.map((faq, i) => (
               <div
                 key={i}
+                className="faq-item"
                 style={{
                   background: "#0E2344",
-                  border: openFaq === i ? "1px solid rgba(56,189,248,0.28)" : "1px solid rgba(255,255,255,0.06)",
+                  border: openFaq === i ? "1px solid rgba(56,189,248,0.30)" : "1px solid rgba(255,255,255,0.06)",
                   borderRadius: 12,
                   overflow: "hidden",
-                  transition: "border-color 200ms",
                 }}
               >
                 <button
@@ -428,11 +520,18 @@ export default function Contact() {
                     </svg>
                   </span>
                 </button>
-                {openFaq === i && (
-                  <div style={{ padding: "0 24px 22px" }}>
-                    <p style={{ fontSize: "0.875rem", color: "rgba(248,250,252,0.55)", lineHeight: 1.75 }}>{faq.a}</p>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateRows: openFaq === i ? "1fr" : "0fr",
+                    transition: "grid-template-rows 220ms cubic-bezier(0.22, 1, 0.36, 1)",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div style={{ overflow: "hidden", minHeight: 0 }}>
+                    <p style={{ padding: "0 24px 22px", fontSize: "0.875rem", color: "rgba(248,250,252,0.55)", lineHeight: 1.78 }}>{faq.a}</p>
                   </div>
-                )}
+                </div>
               </div>
             ))}
           </div>
@@ -442,14 +541,16 @@ export default function Contact() {
   );
 }
 
-function Spinner({ className }: { className?: string }) {
+function Spinner() {
   return (
-    <svg
-      className={`animate-spin ${className ?? ""}`}
-      width="16" height="16" viewBox="0 0 24 24" fill="none"
-    >
-      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="62.83" strokeLinecap="round" style={{ opacity: 0.25 }} />
-      <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-    </svg>
+    <span
+      style={{
+        width: 16, height: 16, borderRadius: "50%",
+        border: "2px solid rgba(255,255,255,0.35)",
+        borderTopColor: "#fff",
+        display: "inline-block",
+        animation: "spin 0.7s linear infinite",
+      }}
+    />
   );
 }

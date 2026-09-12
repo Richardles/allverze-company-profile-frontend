@@ -10,6 +10,7 @@ body,
 
 @theme {
   --font-sans: 'Plus Jakarta Sans', sans-serif;
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body {
@@ -34,11 +35,15 @@ body {
   50%       { opacity: 1; }
 }
 
+/* ── Ticker contains a seamless duplicated loop ─────────── */
 .ticker-track {
   animation: ticker 45s linear infinite;
   display: flex;
   width: max-content;
   will-change: transform;
+}
+.ticker-track:hover {
+  animation-play-state: paused;
 }
 
 .orbital-float {
@@ -64,4 +69,254 @@ body {
 :focus-visible {
   outline: 2px solid #0055E5;
   outline-offset: 2px;
+}
+
+/* ── Fade-in-up ──────────────────────────────────────────── */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-up {
+  animation: fade-in-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.fade-in-up-1 { animation-delay: 0.08s; }
+.fade-in-up-2 { animation-delay: 0.16s; }
+.fade-in-up-3 { animation-delay: 0.24s; }
+.fade-in-up-4 { animation-delay: 0.32s; }
+.fade-in-up-5 { animation-delay: 0.40s; }
+
+/* ── Reduced motion ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Dot grid background ─────────────────────────────────── */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(56,189,248,0.11) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── Card glow on hover ──────────────────────────────────── */
+.card-hover {
+  position: relative;
+  transition: transform 200ms var(--ease-premium), box-shadow 200ms ease, border-color 200ms ease;
+}
+.card-hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px transparent;
+  pointer-events: none;
+  transition: box-shadow 200ms ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+}
+.card-hover:hover::after {
+  box-shadow: inset 0 0 0 1px rgba(0, 85, 229, 0.22);
+}
+
+/* ── Gradient stat text (fallback-safe) ──────────────────── */
+.stat-gradient {
+  color: #F8FAFC;
+  background: linear-gradient(135deg, #F8FAFC 0%, #7AABFF 100%);
+}
+.stat-gradient-light {
+  color: #0B1D35;
+  background: linear-gradient(135deg, #0B1D35 0%, #0055E5 100%);
+}
+.hero-gradient {
+  color: #F8FAFC;
+  background: linear-gradient(90deg, #38BDF8 0%, #7AABFF 100%);
+}
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .stat-gradient,
+  .stat-gradient-light,
+  .hero-gradient {
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* ── Metric band hairlines (theme-aware) ────────────────── */
+.metric-band {
+  border-color: rgba(248, 250, 252, 0.12);
+}
+.metric-band-light {
+  border-color: #E2E8F0;
+}
+
+/* ── Get-in-Touch value accents (footer) ────────────────── */
+.contact-accent-email,
+.contact-accent-wa {
+  color: #FFFFFF;
+  transition: color 150ms ease;
+}
+a:hover .contact-accent-email {
+  color: #38BDF8;
+}
+a:hover .contact-accent-wa {
+  color: #2EE6A8;
+}
+
+/* ── Spinner ─────────────────────────────────────────────── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Scroll reveal (safe: visible by default, fills hidden during delay) ── */
+.reveal {
+  opacity: 1;
+  transform: none;
+}
+html.reveal-ready .reveal:not(.is-in) {
+  opacity: 0;
+  transform: translateY(16px);
+}
+html.reveal-ready .reveal.is-in {
+  animation: reveal-up 420ms var(--ease-premium) backwards;
+}
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+/* ── Micro-interactions (single pass, understated) ──────── */
+@keyframes theme-pop {
+  from { opacity: 0; transform: rotate(-24deg) scale(0.85); }
+  to   { opacity: 1; transform: rotate(0deg) scale(1); }
+}
+.animate-theme-pop {
+  animation: theme-pop 220ms var(--ease-premium) both;
+}
+
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.menu-link {
+  animation: menu-in 200ms var(--ease-premium) both;
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.animate-pop-in {
+  animation: pop-in 350ms var(--ease-premium) both;
+}
+
+/* ── Header nav underline (hover + active share one bar) ── */
+.nav-link {
+  position: relative;
+}
+.nav-link .nav-underline {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 2px;
+  height: 2px;
+  border-radius: 2px;
+  background: #0055E5;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms var(--ease-premium);
+}
+.nav-link:hover .nav-underline,
+.nav-link .nav-underline-on {
+  transform: scaleX(1);
+}
+
+/* ── Footer nav underline ────────────────────────────────── */
+.footer-link {
+  position: relative;
+}
+.footer-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: #38BDF8;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms var(--ease-premium);
+}
+.footer-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* ── Primary CTA hover glow (ring + deeper bloom) ────────── */
+.cta-glow {
+  transition: box-shadow 200ms var(--ease-premium);
+}
+.cta-glow:hover,
+.cta-glow:focus-visible {
+  --glow-base: 0 0 0 1px rgba(0, 85, 229, 0.35), 0 9px 28px rgba(0, 85, 229, 0.45);
+}
+
+/* ── Intent chips (theme colors provided inline via vars) ── */
+.intent-chip {
+  border-radius: 7px;
+  padding: 7px 14px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid var(--chip-border, rgba(248, 250, 252, 0.12));
+  color: var(--chip-color, rgba(248, 250, 252, 0.55));
+  background: transparent;
+  transition: border-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+.intent-chip:hover {
+  border-color: var(--chip-hover-border, rgba(0, 85, 229, 0.5));
+  color: var(--chip-hover-color, #0055E5);
+}
+
+/* ── Services pane brackets ──────────────────────────────── */
+.pane-bracket-l {
+  opacity: 0.65;
+  transition: opacity 200ms ease;
+}
+.pane-bracket-s {
+  opacity: 0.3;
+  transition: opacity 200ms ease;
+}
+.module-pane:hover .pane-bracket-l {
+  opacity: 1;
+}
+.module-pane:hover .pane-bracket-s {
+  opacity: 0.55;
+}
+
+/* ── Pillar chips (lift only — colors are inline) ────────── */
+.pillar-chip {
+  transition: transform 200ms var(--ease-premium);
+}
+.pillar-chip:hover {
+  transform: translateY(-1px);
+}
+
+/* ── FAQ row hover ───────────────────────────────────────── */
+.faq-item {
+  transition: border-color 200ms ease, background-color 200ms ease;
+}
+.faq-item:hover {
+  background: rgba(255, 255, 255, 0.025);
 }

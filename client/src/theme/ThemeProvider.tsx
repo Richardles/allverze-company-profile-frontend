@@ -18,6 +18,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     } catch {
       /* ignore storage write errors; theme still applies for this session */
     }
+    document.documentElement.style.colorScheme = theme === "dark" ? "dark" : "light";
+    document.body.style.background = theme === "dark" ? "#060E1A" : "#F8FAFC";
   }, [theme]);
 
   const toggle = () => setTheme((t) => (t === "dark" ? "light" : "dark"));

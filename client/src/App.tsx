@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import WhatsAppWidget from './components/WhatsAppWidget';
 import { ContactFormProvider } from './contact/ContactFormProvider';
+import { observeReveals } from './lib/reveal';
 import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
@@ -19,11 +20,28 @@ function ScrollToTop() {
   return null;
 }
 
+function RevealObserver() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => {
+      const root = document.getElementById('root');
+      if (root) {
+        observeReveals(root);
+      }
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [pathname]);
+
+  return null;
+}
+
 export default function App() {
   return (
-    <div className="min-h-screen bg-dark-deep text-light font-sans overflow-x-hidden">
+    <div className="min-h-screen font-sans overflow-x-hidden">
       <Header />
       <ScrollToTop />
+      <RevealObserver />
       <ContactFormProvider>
         <Routes>
           <Route path="/" element={<Home />} />

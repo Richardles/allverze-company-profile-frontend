@@ -5,7 +5,7 @@ import allverzeLogo from "../imports/logo.webp";
 
 const navLinks = [
   { label: "Home",     path: "/" },
-  { label: "About",    path: "/about" },
+  { label: "About Us",    path: "/about" },
   { label: "Services", path: "/services" },
   { label: "Contact",  path: "/contact" },
 ];
@@ -72,8 +72,8 @@ export default function Header() {
             <NavLink
               key={path}
               to={path}
-              className={({ isActive }) =>
-                `relative px-4 py-2 text-sm font-semibold transition-colors duration-150 focus-visible:outline-none ${isActive ? "text-blue-600" : ""}`
+              className={() =>
+                `nav-link relative px-4 py-2 text-sm font-semibold transition-colors duration-150 focus-visible:outline-none`
               }
               style={({ isActive }) => ({
                 color: isActive ? "#0055E5" : navColor,
@@ -83,12 +83,7 @@ export default function Header() {
               {({ isActive }) => (
                 <>
                   {label}
-                  {isActive && (
-                    <span
-                      className="absolute bottom-0.5 left-4 right-4 h-0.5"
-                      style={{ background: "#0055E5", borderRadius: 2 }}
-                    />
-                  )}
+                  <span className={`nav-underline${isActive ? " nav-underline-on" : ""}`} aria-hidden="true" />
                 </>
               )}
             </NavLink>
@@ -125,14 +120,18 @@ export default function Header() {
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
           >
             {isDark ? (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="5" />
-                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-              </svg>
+              <span key="light" className="animate-theme-pop" style={{ display: "flex" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="5" />
+                  <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                </svg>
+              </span>
             ) : (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-              </svg>
+              <span key="dark" className="animate-theme-pop" style={{ display: "flex" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+              </span>
             )}
           </button>
         </div>
@@ -152,14 +151,18 @@ export default function Header() {
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
           >
             {isDark ? (
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <circle cx="12" cy="12" r="5" />
-                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-              </svg>
+              <span key="light" className="animate-theme-pop" style={{ display: "flex" }}>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <circle cx="12" cy="12" r="5" />
+                  <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                </svg>
+              </span>
             ) : (
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-              </svg>
+              <span key="dark" className="animate-theme-pop" style={{ display: "flex" }}>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+              </span>
             )}
           </button>
           <button
@@ -190,13 +193,13 @@ export default function Header() {
             background: mobileMenuBg,
           }}
         >
-          {navLinks.map(({ label, path }) => (
+          {navLinks.map(({ label, path }, i) => (
             <NavLink
               key={path}
               to={path}
               onClick={() => setMenuOpen(false)}
-              className={({ isActive }) =>
-                `text-sm font-semibold text-left px-3 py-2.5 transition-colors ${isActive ? "" : ""}`
+              className={() =>
+                `menu-link text-sm font-semibold text-left px-3 py-2.5 transition-colors`
               }
               style={({ isActive }) => ({
                 color: isActive ? "#0055E5" : navColor,
@@ -205,6 +208,7 @@ export default function Header() {
                   ? (isDark ? "rgba(0,85,229,0.12)" : "rgba(0,85,229,0.06)")
                   : "transparent",
                 textDecoration: "none",
+                animationDelay: `${60 + i * 35}ms`,
               })}
             >
               {label}
@@ -212,8 +216,8 @@ export default function Header() {
           ))}
           <button
             onClick={() => { navigate("/contact"); setMenuOpen(false); }}
-            className="mt-3 self-start text-sm font-semibold text-white"
-            style={{ background: "#0055E5", borderRadius: 8, padding: "9px 22px" }}
+            className="menu-link mt-3 self-start text-sm font-semibold text-white"
+            style={{ background: "#0055E5", borderRadius: 8, padding: "9px 22px", animationDelay: `${60 + navLinks.length * 35}ms` }}
           >
             Book a Consultation
           </button>

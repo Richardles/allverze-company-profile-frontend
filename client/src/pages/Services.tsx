@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "../theme/ThemeContext";
 import { useThemeColors } from "../theme/useThemeColors";
 import { WHATSAPP_URL } from "../config";
+import ShieldIcon from "../components/ShieldIcon";
 
 const modules = [
   {
@@ -77,25 +78,51 @@ export default function Services() {
       {/* ── HEADER BANNER ─────────────────────────────────────── */}
       <section style={{ background: "#0B1D35", paddingTop: 88, paddingBottom: 88 }} className="px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
-          <p className="font-bold tracking-[0.14em] uppercase mb-5" style={{ fontSize: "0.6875rem", color: "#38BDF8" }}>
+          <p className="font-bold tracking-[0.14em] uppercase mb-5 fade-in-up" style={{ fontSize: "0.6875rem", color: "#38BDF8" }}>
             Enterprise Solutions
           </p>
           <h1
+            className="fade-in-up fade-in-up-1"
             style={{
               fontSize: "clamp(2.4rem, 5vw, 3.6rem)",
               fontWeight: 800,
               color: "#F8FAFC",
               letterSpacing: "-0.025em",
               lineHeight: 1.1,
-              maxWidth: 660,
+              maxWidth: 700,
             }}
           >
-            Capability built for{" "}
-            <span style={{ color: "#38BDF8" }}>real business momentum.</span>
+            Practical solutions.{" "}
+            <span style={{ color: "#38BDF8" }}>Uncompromising performance.</span>
           </h1>
-          <p style={{ marginTop: 20, fontSize: "1.0625rem", color: "rgba(248,250,252,0.58)", lineHeight: 1.75, maxWidth: 520 }}>
-            Four focused capability domains. One trusted delivery partner. Built to turn operational pressure into measurable progress.
+          <p className="fade-in-up fade-in-up-2" style={{ marginTop: 20, fontSize: "1.0625rem", color: "rgba(248,250,252,0.58)", lineHeight: 1.75, maxWidth: 520 }}>
+            Four deep-expertise capability domains. One integrated partner. Delivered with the integrity and discipline Allverze is built on.
           </p>
+          {/* Service quick-nav */}
+          <div className="flex flex-wrap gap-2 mt-8 fade-in-up fade-in-up-3">
+            {modules.map((m, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => {
+                  document.getElementById(`module-${i + 1}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+                style={{
+                  fontSize: "0.75rem", fontWeight: 600,
+                  color: "rgba(248,250,252,0.55)",
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.10)",
+                  borderRadius: 6,
+                  padding: "5px 12px",
+                  cursor: "pointer",
+                  transition: "background 150ms, color 150ms, border-color 150ms",
+                }}
+                className="hover:bg-white/10 hover:text-white"
+              >
+                {m.tag}
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -116,6 +143,7 @@ export default function Services() {
         return (
           <section
             key={mod.tag}
+            id={`module-${i + 1}`}
             style={{
               background: sectionBg,
               paddingTop: 88,
@@ -124,46 +152,71 @@ export default function Services() {
                 ? "1px solid rgba(0,85,229,0.12)"
                 : `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "#E9EEF5"}`,
             }}
-            className="px-6 lg:px-12"
+            className="px-6 lg:px-12 scroll-mt-24"
           >
             <div className="max-w-7xl mx-auto">
               <div className={`grid grid-cols-1 lg:grid-cols-2 gap-16 items-center ${i % 2 === 1 ? "lg:grid-flow-dense" : ""}`}>
                 {/* Visual pane */}
                 <div className={i % 2 === 1 ? "lg:col-start-2" : ""}>
                   <div
+                    className="module-pane card-hover reveal"
+                    data-reveal-delay={`${i * 40}`}
                     style={{
                       borderRadius: 18,
                       overflow: "hidden",
                       background: panelBg,
                       border: panelBorder,
-                      height: 300,
+                      height: 320,
                       display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
+                      flexDirection: "column",
+                      alignItems: "flex-start",
+                      justifyContent: "space-between",
+                      padding: "32px",
                       position: "relative",
                     }}
                   >
-                    <span
-                      style={{
-                        fontSize: "6.5rem",
-                        fontWeight: 800,
-                        letterSpacing: "-0.06em",
-                        color: mod.dark
-                          ? "rgba(56,189,248,0.08)"
-                          : (isDark ? "rgba(0,85,229,0.10)" : "rgba(0,85,229,0.07)"),
-                        userSelect: "none",
-                        lineHeight: 1,
-                      }}
-                    >
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <div style={{ position: "absolute", top: 20, left: 20, width: 32, height: 3, borderRadius: 2, background: modAccent, opacity: 0.6 }} />
-                    <div style={{ position: "absolute", top: 20, left: 20, width: 3, height: 32, borderRadius: 2, background: modAccent, opacity: 0.6 }} />
+                    {/* Corner bracket accent */}
+                    <div className="pane-bracket-l" style={{ position: "absolute", top: 20, left: 20, width: 32, height: 3, borderRadius: 2, background: modAccent }} />
+                    <div className="pane-bracket-l" style={{ position: "absolute", top: 20, left: 20, width: 3, height: 32, borderRadius: 2, background: modAccent }} />
+                    <div className="pane-bracket-s" style={{ position: "absolute", bottom: 20, right: 20, width: 28, height: 2, borderRadius: 2, background: modAccent }} />
+                    <div className="pane-bracket-s" style={{ position: "absolute", bottom: 20, right: 20, width: 2, height: 28, borderRadius: 2, background: modAccent }} />
+
+                    {/* Index badge */}
+                    <div style={{ alignSelf: "flex-end" }}>
+                      <span
+                        style={{
+                          fontSize: "0.65rem", fontWeight: 800, letterSpacing: "0.12em",
+                          color: modAccent, background: mod.dark ? "rgba(56,189,248,0.10)" : "rgba(0,85,229,0.10)",
+                          border: `1px solid ${mod.dark ? "rgba(56,189,248,0.22)" : "rgba(0,85,229,0.18)"}`,
+                          borderRadius: 5, padding: "4px 10px",
+                        }}
+                      >
+                        {mod.tag}
+                      </span>
+                    </div>
+
+                    {/* Tech stack chips */}
+                    <div className="flex flex-wrap gap-2 relative z-10">
+                      {[mod.sub.split(" · ")[0], mod.sub.split(" · ")[1], mod.sub.split(" · ")[2]].filter(Boolean).map((chip) => (
+                        <span
+                          key={chip}
+                          style={{
+                            fontSize: "0.7rem", fontWeight: 600,
+                            color: mod.dark ? "rgba(248,250,252,0.55)" : (isDark ? "rgba(248,250,252,0.60)" : "#4A6080"),
+                            background: mod.dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)",
+                            border: `1px solid ${mod.dark ? "rgba(255,255,255,0.10)" : "rgba(0,0,0,0.08)"}`,
+                            borderRadius: 5, padding: "3px 9px",
+                          }}
+                        >
+                          {chip}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className={`flex flex-col gap-5 ${i % 2 === 1 ? "lg:col-start-1 lg:row-start-1" : ""}`}>
+                <div className={`reveal flex flex-col gap-5 ${i % 2 === 1 ? "lg:col-start-1 lg:row-start-1" : ""}`} data-reveal-delay={`${i * 40 + 70}`}>
                   <div>
                     <p style={{ fontSize: "0.6875rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: modAccent, marginBottom: 4 }}>
                       {mod.tag}
@@ -219,23 +272,24 @@ export default function Services() {
         className="px-6 lg:px-12"
       >
         <div className="max-w-7xl mx-auto">
-          <div className="mb-16 max-w-xl">
+          <div className="mb-16 max-w-xl reveal">
             <p className="font-bold tracking-[0.14em] uppercase mb-3" style={{ fontSize: "0.6875rem", color: "#0055E5" }}>
               How We Work
             </p>
-            <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.5rem)", fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.02em" }}>
-              A disciplined path from insight to execution
+            <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.5rem)", fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.022em" }}>
+              The A to Z Workflow
             </h2>
             <p style={{ marginTop: 10, fontSize: "0.9375rem", color: colors.textSub, lineHeight: 1.7 }}>
-              Four clear phases. No guesswork, no inflated complexity, and no drift from the outcomes that matter.
+              Four phases, zero guesswork. Every engagement follows the same disciplined process.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-5 overflow-visible sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {steps.map((step, i) => (
               <div
                 key={step.num}
-                className="group relative flex flex-col gap-4 overflow-visible"
+                className="card-hover reveal flex flex-col gap-4"
+                data-reveal-delay={`${i * 70}`}
                 style={{
                   background: colors.cardBg,
                   border: `1px solid ${colors.cardBorder}`,
@@ -246,20 +300,9 @@ export default function Services() {
                 }}
               >
                 {i < steps.length - 1 && (
-                  <div className="pointer-events-none absolute left-full top-1/2 z-10 hidden h-8 w-8 -translate-y-1/2 items-center justify-center lg:flex">
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke={isDark ? "rgba(255,255,255,0.20)" : "#CBD5E1"}
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M9 18l6-6-6-6"
-                      />
+                  <div className="hidden lg:block absolute" style={{ top: 33, right: -18, width: 16, height: 16, zIndex: 2 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                      <path d="M9 18l6-6-6-6" stroke={colors.textMuted} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </div>
                 )}
@@ -284,18 +327,19 @@ export default function Services() {
         className="px-6 lg:px-12"
       >
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10">
-          <div className="max-w-xl">
+          <div className="max-w-xl reveal">
             <h2 style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", fontWeight: 700, color: "#F8FAFC", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
-              Ready to move your next initiative forward?
+              Ready to Solve Your Next Challenge?
             </h2>
             <p style={{ marginTop: 10, fontSize: "0.9375rem", color: "rgba(248,250,252,0.50)", lineHeight: 1.7 }}>
-              A direct conversation with specialists who understand the business context behind the technical challenge — no generic pitch, no wasted time.
+              A direct conversation with engineers who understand your problem — no pitch decks, no generic proposals.
             </p>
-            <p style={{ marginTop: 8, fontSize: "0.78rem", color: "rgba(248,250,252,0.30)" }}>
-              Confidential by default. NDA available before discovery.
+            <p style={{ marginTop: 8, fontSize: "0.78rem", color: "rgba(248,250,252,0.30)", display: "flex", alignItems: "center", gap: 6 }}>
+              <ShieldIcon size={12} strokeWidth={2.2} />
+              100% Confidential. NDA Available Upon Request.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
+          <div className="reveal flex flex-col sm:flex-row gap-3 flex-shrink-0" data-reveal-delay="80">
             <button
               onClick={() => navigate("/contact")}
               className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-white transition-all duration-150 hover:opacity-90"

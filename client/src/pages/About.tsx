@@ -11,7 +11,7 @@ const coreValues = [
       </svg>
     ),
     title: "Customer Centricity",
-    quote: "We Solve, Not Just Sell",
+    quote: "We Solve — Not Just Sell",
     desc: "Every recommendation starts with your outcome, not our portfolio. We never prescribe technology for technology's sake.",
   },
   {
@@ -90,36 +90,55 @@ const team = [
 
 const pillars = ["Best Service", "Best Quality", "Integrity", "Reliability", "Professionalism"];
 
+const orbitalStory = [
+  { label: "Continuous Connection", desc: "The infinite loop represents our commitment to unbroken partnership — no hand-offs, no gaps, no disappearing acts post-launch." },
+  { label: "Navy → Blue → Cyan",    desc: "The gradient reflects our journey: from the depth of foundational expertise to the clarity of innovative breakthrough." },
+  { label: "Technology & Collaboration", desc: "Two interlocking arcs reflect the union of technical mastery and human-centered advisory — always in motion, always together." },
+  { label: "Better Every Day",       desc: "The ring never ends, just as our pursuit of continuous improvement never stops. Every orbit brings new insight." },
+];
+
+const missionPillars = [
+  "Deliver reliable, production-grade technology that performs when it matters most.",
+  "Connect diverse expertise from A to Z — no challenge too broad or too specialized.",
+  "Build long-term relationships anchored in integrity, transparency, and mutual respect.",
+  "Pursue continuous improvement — \"Better Every Day\" is our operating discipline.",
+];
+
 export default function About() {
   const navigate = useNavigate();
   const { isDark } = useTheme();
   const colors = useThemeColors();
 
-  const missionBg = isDark ? "#0E2344" : colors.cardBg;
+  const pillabBg = isDark ? "#0B1D35" : "#FFFFFF";
+  const pillBorder = isDark ? "rgba(255,255,255,0.07)" : "#E2E8F0";
+  const missionBg = isDark ? "#0E2344" : "#FFFFFF";
 
   return (
     <main style={{ paddingTop: 72 }}>
       {/* ── HEADER BANNER ─────────────────────────────────────── */}
       <section style={{ background: "#0B1D35", paddingTop: 88, paddingBottom: 88 }} className="px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
-          <p className="font-bold tracking-[0.14em] uppercase mb-5" style={{ fontSize: "0.6875rem", color: "#38BDF8" }}>
+          <p className="font-bold tracking-[0.14em] uppercase mb-5 fade-in-up" style={{ fontSize: "0.6875rem", color: "#38BDF8" }}>
             About Allverze
           </p>
           <h1
+            className="fade-in-up fade-in-up-1"
             style={{
               fontSize: "clamp(2.4rem, 5vw, 3.6rem)",
               fontWeight: 800,
               color: "#F8FAFC",
               letterSpacing: "-0.025em",
               lineHeight: 1.1,
-              maxWidth: 700,
+              maxWidth: 680,
             }}
           >
-            Connecting{" "}
+            A Universe of Unlimited{" "}
             <span style={{ color: "#38BDF8" }}>Possibilities</span>
           </h1>
-          <p style={{ marginTop: 20, fontSize: "1.0625rem", color: "rgba(248,250,252,0.58)", lineHeight: 1.75, maxWidth: 560 }}>
-            We connect business ambition with practical technology, turning complex challenges into clear progress. The result is a partnership that is built on trust, technical clarity, and measurable momentum.
+          <p className="fade-in-up fade-in-up-2" style={{ marginTop: 20, fontSize: "1.0625rem", color: "rgba(248,250,252,0.58)", lineHeight: 1.75, maxWidth: 560 }}>
+            <strong style={{ color: "rgba(248,250,252,0.82)", fontWeight: 600 }}>All</strong> — the breadth of every solution imaginable.{" "}
+            <strong style={{ color: "rgba(248,250,252,0.82)", fontWeight: 600 }}>Verze</strong> — a universe of possibilities, boundless and ever-expanding.
+            Together: your partner from A to Z.
           </p>
         </div>
       </section>
@@ -127,14 +146,14 @@ export default function About() {
       {/* ── ORBITAL RING STORY ────────────────────────────────── */}
       <section style={{ background: colors.pageBg, paddingTop: 96, paddingBottom: 96 }} className="px-6 lg:px-12">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-          <div className="flex justify-center">
-            <div className="orbital-float">
-              <OrbitalRing size={320} />
+          <div className="flex justify-center reveal">
+            <div className="orbital-float" style={{ maxWidth: "min(320px, 82vw)", width: "100%" }}>
+              <OrbitalRing size={320} variant="constellation" />
             </div>
           </div>
 
           <div className="flex flex-col gap-7">
-            <div>
+            <div className="reveal" data-reveal-delay="70">
               <p className="font-bold tracking-[0.14em] uppercase mb-3" style={{ fontSize: "0.6875rem", color: "#0055E5" }}>
                 The Orbital Ring
               </p>
@@ -144,13 +163,8 @@ export default function About() {
             </div>
 
             <div className="flex flex-col gap-6">
-              {[
-                { label: "Continuous Connection", desc: "The infinite loop represents our commitment to unbroken partnership — no hand-offs, no gaps, no disappearing acts post-launch." },
-                { label: "Navy → Blue → Cyan",    desc: "The gradient reflects our journey: from the depth of foundational expertise to the clarity of innovative breakthrough." },
-                { label: "Technology & Collaboration", desc: "Two interlocking arcs reflect the union of technical mastery and human-centred advisory — always in motion, always together." },
-                { label: "Better Every Day",       desc: "The ring never ends, just as our pursuit of continuous improvement never stops. Every orbit brings new insight." },
-              ].map((item) => (
-                <div key={item.label} className="flex gap-4">
+              {orbitalStory.map((item, i) => (
+                <div key={item.label} className="flex gap-4 reveal" data-reveal-delay={`${140 + i * 60}`}>
                   <div
                     style={{
                       width: 6, height: 6, borderRadius: "50%",
@@ -171,7 +185,7 @@ export default function About() {
       {/* ── MISSION & VISION ──────────────────────────────────── */}
       <section style={{ background: "#0B1D35", paddingTop: 96, paddingBottom: 96 }} className="px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-14">
+          <div className="mb-14 reveal">
             <p className="font-bold tracking-[0.14em] uppercase mb-3" style={{ fontSize: "0.6875rem", color: "#38BDF8" }}>
               Purpose & Direction
             </p>
@@ -184,7 +198,7 @@ export default function About() {
             {/* Vision */}
             <div
               style={{ background: "#0E2344", border: "1px solid rgba(56,189,248,0.20)", borderRadius: 16, padding: "40px" }}
-              className="flex flex-col gap-5"
+              className="card-hover reveal flex flex-col gap-5"
             >
               <div className="flex items-center gap-3">
                 <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(56,189,248,0.12)", display: "flex", alignItems: "center", justifyContent: "center", color: "#38BDF8" }}>
@@ -204,8 +218,9 @@ export default function About() {
 
             {/* Mission */}
             <div
-              style={{ background: missionBg, border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : colors.cardBorder}`, borderRadius: 16, padding: "40px" }}
-              className="flex flex-col gap-5"
+              style={{ background: missionBg, border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "#E2E8F0"}`, borderRadius: 16, padding: "40px" }}
+              className="card-hover reveal flex flex-col gap-5"
+              data-reveal-delay="80"
             >
               <div className="flex items-center gap-3">
                 <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(0,85,229,0.09)", display: "flex", alignItems: "center", justifyContent: "center", color: "#0055E5" }}>
@@ -215,16 +230,11 @@ export default function About() {
                 </div>
                 <span style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#0055E5" }}>Mission</span>
               </div>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: colors.textPrimary, lineHeight: 1.45, letterSpacing: "-0.01em" }}>
-                Four pillars that define how we show up for every client, every day.
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: isDark ? "#F8FAFC" : "#0B1D35", lineHeight: 1.45, letterSpacing: "-0.01em" }}>
+                Four commitments that define how we show up for every client, every day.
               </h3>
               <ol className="flex flex-col gap-3.5">
-                {[
-                  "Deliver reliable, production-grade technology that performs when it matters most.",
-                  "Connect diverse expertise from A to Z — no challenge too broad or too specialized.",
-                  "Build long-term relationships anchored in integrity, transparency, and mutual respect.",
-                  "Pursue continuous improvement — \"Better Every Day\" is our operating discipline.",
-                ].map((pillar, i) => (
+                {missionPillars.map((pillar, i) => (
                   <li key={i} className="flex gap-3 items-start">
                     <span
                       style={{
@@ -249,7 +259,7 @@ export default function About() {
       {/* ── ONE STANDARD OF EXCELLENCE ────────────────────────── */}
       <section style={{ background: colors.pageBg, paddingTop: 72, paddingBottom: 72 }} className="px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-10 text-center">
+          <div className="mb-10 text-center reveal">
             <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.1rem)", fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.02em" }}>
               One Standard of Excellence
             </h2>
@@ -260,9 +270,11 @@ export default function About() {
             {pillars.map((pillar, i) => (
               <div key={pillar} className="flex items-center gap-3">
                 <div
+                  className="pillar-chip reveal"
+                  data-reveal-delay={`${i * 50}`}
                   style={{
-                    background: colors.cardBg,
-                    border: `1px solid ${colors.cardBorder}`,
+                    background: pillabBg,
+                    border: `1px solid ${pillBorder}`,
                     borderRadius: 10,
                     padding: "14px 24px",
                     display: "flex",
@@ -275,7 +287,7 @@ export default function About() {
                   <span style={{ fontSize: "0.875rem", fontWeight: 600, color: colors.textPrimary }}>{pillar}</span>
                 </div>
                 {i < pillars.length - 1 && (
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={isDark ? "rgba(255,255,255,0.20)" : "#CBD5E1"} strokeWidth="2.5" strokeLinecap="round">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={colors.textMuted} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 18l6-6-6-6" />
                   </svg>
                 )}
@@ -288,7 +300,7 @@ export default function About() {
       {/* ── CORE VALUES ───────────────────────────────────────── */}
       <section style={{ background: "#0B1D35", paddingTop: 96, paddingBottom: 96 }} className="px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-14">
+          <div className="mb-14 reveal">
             <p className="font-bold tracking-[0.14em] uppercase mb-3" style={{ fontSize: "0.6875rem", color: "#38BDF8" }}>
               What We Stand For
             </p>
@@ -298,19 +310,37 @@ export default function About() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {coreValues.map((v) => (
+            {coreValues.map((v, i) => (
               <div
                 key={v.title}
-                className="flex flex-col gap-4"
-                style={{ background: "#0E2344", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 14, padding: "28px" }}
+                className="card-hover group reveal flex flex-col gap-4 relative overflow-hidden"
+                data-reveal-delay={`${i * 70}`}
+                style={{
+                  background: "#0E2344",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  borderRadius: 14,
+                  padding: "28px",
+                }}
               >
-                <div style={{ width: 40, height: 40, borderRadius: 8, background: "rgba(0,85,229,0.18)", color: "#38BDF8", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                {/* Top gradient accent line */}
+                <div
+                  className="absolute top-0 left-0 right-0 opacity-50 transition-opacity duration-200 group-hover:opacity-100"
+                  style={{
+                    height: 2,
+                    background: "linear-gradient(90deg, #0055E5 0%, #38BDF8 50%, transparent 100%)",
+                    borderRadius: "14px 14px 0 0",
+                  }}
+                />
+                <div
+                  className="transition-transform duration-200 group-hover:scale-105"
+                  style={{ width: 42, height: 42, borderRadius: 10, background: "linear-gradient(135deg, rgba(0,85,229,0.22) 0%, rgba(56,189,248,0.10) 100%)", color: "#38BDF8", display: "flex", alignItems: "center", justifyContent: "center" }}
+                >
                   {v.icon}
                 </div>
                 <div>
-                  <div style={{ fontSize: "1rem", fontWeight: 700, color: "#F8FAFC", marginBottom: 2 }}>{v.title}</div>
-                  <div style={{ fontSize: "0.75rem", color: "#38BDF8", fontStyle: "italic", marginBottom: 10 }}>&quot;{v.quote}&quot;</div>
-                  <p style={{ fontSize: "0.855rem", color: "rgba(248,250,252,0.48)", lineHeight: 1.7 }}>{v.desc}</p>
+                  <div style={{ fontSize: "1rem", fontWeight: 700, color: "#F8FAFC", marginBottom: 3, letterSpacing: "-0.01em" }}>{v.title}</div>
+                  <div style={{ fontSize: "0.74rem", color: "#38BDF8", fontStyle: "italic", marginBottom: 10, opacity: 0.85 }}>"{v.quote}"</div>
+                  <p style={{ fontSize: "0.855rem", color: "rgba(248,250,252,0.50)", lineHeight: 1.72 }}>{v.desc}</p>
                 </div>
               </div>
             ))}
@@ -321,7 +351,7 @@ export default function About() {
       {/* ── TEAM ──────────────────────────────────────────────── */}
       <section style={{ background: colors.pageBg, paddingTop: 96, paddingBottom: 96 }} className="px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-14">
+          <div className="mb-14 reveal">
             <p className="font-bold tracking-[0.14em] uppercase mb-3" style={{ fontSize: "0.6875rem", color: "#0055E5" }}>
               Leadership & Governance
             </p>
@@ -334,36 +364,53 @@ export default function About() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl">
-            {team.map((member) => (
+            {team.map((member, i) => (
               <div
                 key={member.name}
-                className="group flex flex-col overflow-hidden transition-all duration-200 hover:-translate-y-1"
+                className="group reveal flex flex-col overflow-hidden card-hover"
+                data-reveal-delay={`${i * 80}`}
                 style={{
                   background: colors.cardBg,
                   border: `1px solid ${colors.cardBorder}`,
-                  borderRadius: 16,
+                  borderRadius: 18,
                   boxShadow: isDark
-                    ? "0 2px 12px rgba(0,0,0,0.30)"
-                    : "0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.04)",
+                    ? "0 2px 16px rgba(0,0,0,0.35)"
+                    : "0 1px 4px rgba(0,0,0,0.05), 0 6px 20px rgba(0,0,0,0.06)",
                 }}
               >
-                <div style={{ height: 220, background: isDark ? "#0E2344" : "#DBEAFE", overflow: "hidden" }}>
+                <div style={{ height: 240, background: isDark ? "#0E2344" : "#DBEAFE", overflow: "hidden", position: "relative" }}>
                   <img
                     src={member.photo}
                     alt={member.name}
+                    loading="lazy"
                     className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                   />
+                  {/* Gradient overlay on bottom of photo */}
+                  <div
+                    className="absolute bottom-0 left-0 right-0"
+                    style={{
+                      height: 60,
+                      background: `linear-gradient(to top, ${isDark ? "rgba(11,29,53,0.85)" : "rgba(255,255,255,0.6)"} 0%, transparent 100%)`,
+                    }}
+                  />
                 </div>
-                <div className="flex flex-col gap-2 p-5 flex-1">
+                <div className="flex flex-col gap-2.5 p-5 flex-1">
                   <div>
-                    <div style={{ fontSize: "0.9375rem", fontWeight: 700, color: colors.textPrimary }}>{member.name}</div>
-                    <div style={{ fontSize: "0.775rem", fontWeight: 600, color: "#0055E5", marginTop: 1 }}>{member.title}</div>
+                    <div style={{ fontSize: "0.9375rem", fontWeight: 700, color: colors.textPrimary, letterSpacing: "-0.01em" }}>{member.name}</div>
+                    <div style={{ fontSize: "0.775rem", fontWeight: 600, color: "#0055E5", marginTop: 2 }}>{member.title}</div>
                   </div>
-                  <div style={{ fontSize: "0.75rem", color: isDark ? "#7AABFF" : "#6B8CAE", background: isDark ? "rgba(0,85,229,0.14)" : "#EFF4FF", borderRadius: 4, padding: "2px 8px", alignSelf: "flex-start" }}>
+                  <div
+                    style={{
+                      fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.05em",
+                      color: colors.tagColor,
+                      background: colors.tagBg,
+                      borderRadius: 5, padding: "3px 9px", alignSelf: "flex-start",
+                    }}
+                  >
                     {member.domain}
                   </div>
                   <button
-                    className="mt-auto flex items-center gap-1.5 text-xs font-semibold hover:underline focus-visible:outline-none transition-colors"
+                    className="mt-auto flex items-center gap-1.5 text-xs font-semibold transition-all hover:gap-2.5 focus-visible:outline-none"
                     style={{ color: "#0055E5" }}
                     onClick={() => window.open("https://linkedin.com", "_blank", "noopener")}
                   >
@@ -372,6 +419,9 @@ export default function About() {
                       <circle cx="4" cy="4" r="2" />
                     </svg>
                     LinkedIn Profile
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
                   </button>
                 </div>
               </div>
@@ -386,7 +436,7 @@ export default function About() {
         className="px-6 lg:px-12"
       >
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
-          <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.1rem)", fontWeight: 700, color: "#F8FAFC", letterSpacing: "-0.02em" }}>
+          <h2 className="reveal" style={{ fontSize: "clamp(1.6rem, 3vw, 2.1rem)", fontWeight: 700, color: "#F8FAFC", letterSpacing: "-0.02em" }}>
             Ready to work with a team that solves, not just sells?
           </h2>
           <button

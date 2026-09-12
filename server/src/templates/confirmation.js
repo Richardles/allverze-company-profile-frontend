@@ -25,14 +25,14 @@ export function renderConfirmation({
     subject: `We've received your message — Allverze`,
     text: `Hi ${name},
 
-Thank you for reaching out to Allverze. We've received your message, and our team will review your inquiry within one business day.
+Thank you for reaching out to Allverze. We've received your message — a real person on our team will get back to you within one business day.
 
 Reference: ${leadRef}
 Submitted: ${userReceivedAt ?? receivedAt}
 ${userReceivedAt ? `Allverze Time: ${receivedAt}\n` : ''}Intent: ${intentLabel}
 Phone: ${phone}
 
-Need a faster response? Reach us directly:
+Prefer to talk directly? We're one message away:
 - Email: ${publicEmail}
 - WhatsApp: ${whatsappDisplay}
 
@@ -69,7 +69,7 @@ The Allverze Team`,
             <td style="padding:40px 40px 32px;">
               <h2 style="margin:0 0 16px;font-size:20px;font-weight:700;color:#0B1D35;">Hi ${safeName},</h2>
               <p style="margin:0 0 20px;font-size:15px;color:#4A6080;line-height:1.7;">
-                Thank you for reaching out to us. We've received your message and our team will review your inquiry within <strong style="color:#0B1D35;">one business day</strong>.
+                Thank you for reaching out to us. We've received your message — a real person on our team will get back to you within <strong style="color:#0B1D35;">one business day</strong>.
               </p>
 
               <!-- Summary Card -->
@@ -110,7 +110,7 @@ The Allverze Team`,
               </table>
 
               <!-- Contact Section -->
-              <p style="margin:0 0 14px;font-size:15px;color:#4A6080;line-height:1.7;">Need a faster response? Reach us directly:</p>
+              <p style="margin:0 0 14px;font-size:15px;color:#4A6080;line-height:1.7;">Prefer to talk directly? We're one message away:</p>
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:0 24px;">
@@ -135,7 +135,7 @@ The Allverze Team`,
                 <tr>
                   <td align="center">
                     <a href="${waCompanyHref}" target="_blank" rel="noopener" style="display:inline-block;background:#0055E5;color:#FFFFFF;font-size:15px;font-weight:700;text-align:center;text-decoration:none;padding:14px 36px;border-radius:9px;">
-                      Chat With Us on WhatsApp &nbsp;&rarr;
+                      Chat with us on WhatsApp &nbsp;&rarr;
                     </a>
                     <p style="margin:10px 0 0;font-size:12px;color:#8AA0BD;">Priority access &middot; Typically responds within minutes</p>
                   </td>

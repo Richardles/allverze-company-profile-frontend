@@ -11,6 +11,8 @@ export interface ThemeColors {
   inputBorder: string;
   inputActiveBorder: string;
   inputBase: CSSProperties;
+  tagBg: string;
+  tagColor: string;
 }
 
 export function useThemeColors(): ThemeColors {
@@ -22,12 +24,14 @@ export function useThemeColors(): ThemeColors {
   return {
     pageBg: isDark ? "#060E1A" : "#F8FAFC",
     cardBg: isDark ? "#0B1D35" : "#FFFFFF",
-    cardBorder: isDark ? "rgba(255,255,255,0.08)" : "#E2E8F0",
+    cardBorder: isDark ? "rgba(255,255,255,0.07)" : "#E2E8F0",
     textPrimary,
     textSub: isDark ? "rgba(248,250,252,0.60)" : "#4A6080",
-    textMuted: isDark ? "rgba(248,250,252,0.38)" : "#8AA0BD",
+    textMuted: isDark ? "rgba(248,250,252,0.38)" : "#64748B",
     inputBorder,
     inputActiveBorder: "#0055E5",
+    tagBg: isDark ? "rgba(0,85,229,0.15)" : "#EFF4FF",
+    tagColor: isDark ? "#7AABFF" : "#6B8CAE",
     inputBase: {
       width: "100%",
       background: isDark ? "rgba(255,255,255,0.04)" : "#F8FAFC",
