@@ -260,7 +260,7 @@ export default function Footer() {
               className="text-sm font-semibold text-white transition-opacity hover:opacity-85"
               style={{ background: "#0055E5", borderRadius: 9, padding: "10px 16px", boxShadow: "0 2px 10px rgba(0,85,229,0.22)" }}
             >
-              Book a Consultation
+              Let's Talk
             </button>
           </div>
         </div>

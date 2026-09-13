@@ -102,7 +102,7 @@ export default function Header() {
               boxShadow: "0 2px 12px rgba(0,85,229,0.32)",
             }}
           >
-            Book a Consultation
+            Let's Talk
           </button>
 
           {/* Theme toggle */}
@@ -219,7 +219,7 @@ export default function Header() {
             className="menu-link mt-3 self-start text-sm font-semibold text-white"
             style={{ background: "#0055E5", borderRadius: 8, padding: "9px 22px", animationDelay: `${60 + navLinks.length * 35}ms` }}
           >
-            Book a Consultation
+            Let's Talk
           </button>
         </div>
       )}
