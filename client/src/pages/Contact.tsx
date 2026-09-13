@@ -303,7 +303,7 @@ export default function Contact() {
                     >
                       {leadRef}
                     </span>
-                    <span style={{ fontSize: "0.72rem", color: textMuted }}>Keep this for your records</span>
+                    <span style={{ fontSize: "0.72rem", color: textMuted }}>Your reference — we'll reply shortly.</span>
                     {confirmation === "sent" && (
                       <span style={{ fontSize: "0.75rem", color: textMuted, marginTop: 2 }}>
                         Confirmation email sent to {form.email}.
@@ -327,14 +327,14 @@ export default function Contact() {
                     Start the Conversation
                   </h2>
                   <p style={{ marginTop: 5, fontSize: "0.875rem", color: textSub }}>
-                    Tell us what you need — we handle the rest.
+                    Tell us what you're building — we'll take it from there.
                   </p>
                 </div>
 
                 {/* Intent chips */}
                 <div className="flex flex-col gap-2">
                   <label style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted }}>
-                    What brings you here?
+                    What can we help you build?
                   </label>
                   <div className="flex flex-wrap gap-2">
                     {CONTACT_INTENTS.map((opt) => (

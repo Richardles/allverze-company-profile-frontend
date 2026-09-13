@@ -4,7 +4,7 @@ export const INTENT_CODES = {
   'Application Performance Monitoring': 'APM',
   'Performance & Automation Testing': 'PAT',
   'Discovery & Advisory': 'DAV',
-  'Other': 'OTH',
+  'Something else': 'OTH',
 };
 
 const INTENT_PREFIX = /^\[Intent: (.+?)\]\s*(?:\n\n)?/;

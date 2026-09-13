@@ -4,7 +4,7 @@ export type ContactIntent =
   | "Application Performance Monitoring"
   | "Performance & Automation Testing"
   | "Discovery & Advisory"
-  | "Other";
+  | "Something else";
 
 export interface ContactFormState {
   name: string;

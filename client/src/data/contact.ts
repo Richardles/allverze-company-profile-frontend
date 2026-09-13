@@ -6,5 +6,5 @@ export const CONTACT_INTENTS: ContactIntent[] = [
   "Application Performance Monitoring",
   "Performance & Automation Testing",
   "Discovery & Advisory",
-  "Other",
+  "Something else",
 ];
